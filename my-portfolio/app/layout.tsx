@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it">
+    <html lang="it" className="scroll-smooth">
       {/* 3. Applica la variabile del font al body */}
       <body className={`${agrandir.variable} antialiased`}>
         {children}
