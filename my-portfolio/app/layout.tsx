@@ -1,19 +1,53 @@
 import type { Metadata } from "next";
-// 1. Importa localFont invece di Google Fonts
 import localFont from "next/font/local";
 import "./globals.css";
 
-// 2. Configura il font Agrandir
-// Assicurati che il percorso 'src' corrisponda al nome esatto del tuo file nella cartella app/fonts
-const agrandir = localFont({
-  src: "./fonts/Agrandir-wide-bold.ttf", // Cambia l'estensione se usi .otf o .ttf
-  variable: "--font-agrandir",
-  weight: "900", // Imposta il peso normale (o usa un array se hai più pesi)
+// Configurazione "Smart": mappiamo ogni peso al suo file specifico
+const saira = localFont({
+  src: [
+    {
+      path: "./fonts/Saira/static/Saira-Thin.ttf", // Se lo hai
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-Regular.ttf", // FONDAMENTALE per il testo base
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Saira/static/Saira-Medium.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-saira", // Unica variabile per tutto
 });
 
 export const metadata: Metadata = {
   title: "FORGE - Build Your Strength",
   description: "La palestra per forgiare il tuo corpo.",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 };
 
 export default function RootLayout({
@@ -22,9 +56,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it" className="scroll-smooth">
-      {/* 3. Applica la variabile del font al body */}
-      <body className={`${agrandir.variable} antialiased`}>
+    <html lang="it" className="scroll-smooth overscroll-none">
+      <body className={`${saira.variable} antialiased`}>
         {children}
       </body>
     </html>

@@ -1,78 +1,72 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function ConstructionLoader() {
-  const [progress, setProgress] = useState(0);
-  
-  // Usiamo un ref per tenere traccia del valore preciso (coi decimali)
-  // Questo serve per i calcoli fluidi, mentre lo 'state' aggiorna solo l'interfaccia
-  const progressRef = useRef(0);
-  const animationRef = useRef<number | null>(null);
+  // Stato per il numero testuale (0 -> 85)
+  const [displayNumber, setDisplayNumber] = useState(0);
+  // Stato per la larghezza della barra (trigger per CSS)
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    const target = 85; 
-    const speedFactor = 0.02; // Più è basso (es. 0.02), più è lento. Più è alto (0.1), più è scattante.
+    const target = 85;
+    
+    // 1. ANIMAZIONE BARRA (Gestita via CSS per massima fluidità)
+    // Ritardo minimo per permettere al browser di renderizzare lo stato iniziale a 0
+    const startTimeout = setTimeout(() => {
+      setWidth(target);
+    }, 100);
 
-    const animate = () => {
-      // 1. Calcoliamo la distanza rimanente
-      const current = progressRef.current;
-      const distance = target - current;
+    // 2. ANIMAZIONE NUMERO (Contatore leggero)
+    // Non serve requestAnimationFrame complesso, basta un intervallo
+    // che simula la durata dell'animazione CSS
+    let start = 0;
+    const duration = 2500; // 2.5 secondi (deve coincidere con duration-2500 nel CSS sotto)
+    const startTime = performance.now();
 
-      // 2. Se siamo molto vicini al target, ci fermiamo e arrotondiamo
-      if (distance < 0.5) {
-        progressRef.current = target;
-        setProgress(target);
-        return; // Stop animazione
+    const updateNumber = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function: easeOutQuart (rallenta alla fine come il tuo codice originale)
+      const easeOut = 1 - Math.pow(1 - progress, 4);
+      
+      const currentVal = Math.floor(start + (target - start) * easeOut);
+      setDisplayNumber(currentVal);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
       }
-
-      // 3. Calcolo del passo: ci muoviamo del 5% della distanza rimanente
-      // All'inizio la distanza è grande -> passo grande (veloce)
-      // Alla fine la distanza è piccola -> passo piccolo (lento)
-      const step = distance * speedFactor;
-      
-      // Aggiorniamo il ref (valore decimale preciso)
-      progressRef.current += step;
-      
-      // Aggiorniamo lo stato (valore intero per l'utente)
-      setProgress(Math.floor(progressRef.current));
-
-      // 4. Richiediamo il prossimo frame
-      animationRef.current = requestAnimationFrame(animate);
     };
 
-    // Ritardo iniziale di 1 secondo
-    const startDelay = setTimeout(() => {
-      animationRef.current = requestAnimationFrame(animate);
-    }, 1000);
+    requestAnimationFrame(updateNumber);
 
-    // Pulizia quando il componente viene smontato
-    return () => {
-      clearTimeout(startDelay);
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
+    return () => clearTimeout(startTimeout);
   }, []);
 
   return (
-    <div className="w-full max-w-md flex flex-col gap-3 animate-pulse-slow">
+    <div className="text-white w-[65%] md:w-full max-w-md flex flex-col gap-3 animate-pulse-slow mx-auto">
+        
         {/* Testo sopra la barra e Percentuale */}
         <div className="flex justify-between items-end px-1">
-            <span className="text-xs md:text-sm uppercase tracking-[0.15em] text-gray-300 font-medium">
+            <span className="font-regular text-[10px] md:text-sm uppercase tracking-[0.15em] font-medium opacity-90">
               Stiamo Arrivando...
             </span>
-            <span className="text-sm md:text-base font-mono text-white">
-                {progress}%
+            <span className="font-regular text-xs md:text-base font-mono opacity-90 min-w-[3ch] text-right">
+                {displayNumber}%
             </span>
         </div>
 
         {/* Contenitore Barra */}
-        <div className="w-full h-2 bg-gray-800/80 rounded-full overflow-hidden border border-gray-700/50 backdrop-blur-sm">
-            {/* Barra di riempimento */}
+        <div className="w-full h-1.5 md:h-2 bg-white/10 rounded-full overflow-hidden border border-white/20 backdrop-blur-sm">
+            {/* Barra di riempimento 
+               - width è controllata da una variabile, ma il movimento è gestito da 'transition-all'
+               - duration-1000 è stato aumentato per renderlo fluido
+               - ease-out crea l'effetto rallentamento alla fine
+            */}
             <div 
-                className="h-full bg-gradient-to-r from-gray-400 to-white shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-                // Nota: ho rimosso 'transition-all' qui perché l'animazione è gestita via JS frame-by-frame
-                // Se lasciassi transition, entrerebbe in conflitto con l'aggiornamento rapido dei frame
-                style={{ width: `${progress}%` }}
+                className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-[2500ms] ease-out"
+                style={{ width: `${width}%` }}
             ></div>
         </div>
     </div>

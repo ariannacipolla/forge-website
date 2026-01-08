@@ -1,0 +1,8 @@
+Informativa Privacy
+1. Titolare del Trattamento Il titolare del trattamento è [Il Tuo Nome o Nome Azienda], contattabile all'indirizzo email: [Tua Email].
+2. Dati trattati e Finalità Questo sito web è statico e non raccoglie dati personali degli utenti tramite moduli di contatto o registrazione.
+Tuttavia, i sistemi informatici e le procedure software preposte al funzionamento di questo sito web (ospitato su server di Aruba S.p.A.) acquisiscono, nel corso del loro normale esercizio, alcuni dati personali la cui trasmissione è implicita nell'uso dei protocolli di comunicazione di Internet. In questa categoria di dati rientrano gli indirizzi IP, gli orari delle richieste e altri parametri relativi al sistema operativo dell'utente.
+Questi dati vengono utilizzati al solo fine di controllare il corretto funzionamento del sito e per motivi di sicurezza (Legittimo Interesse), e vengono cancellati secondo le tempistiche standard del provider di hosting.
+3. Luogo del Trattamento I dati sono conservati su server ubicati all'interno dell'Unione Europea gestiti da Aruba S.p.A., che agisce in qualità di Responsabile del Trattamento per quanto riguarda l'infrastruttura tecnologica.
+4. Cookie Questo sito NON utilizza cookie di profilazione o di marketing. [Se usi la mappa come link]: Vengono utilizzati collegamenti esterni a piattaforme terze (Instagram, Google Maps) che non installano cookie su questo sito, ma potrebbero farlo una volta che l'utente atterra sulle rispettive piattaforme.
+5. Diritti dell'interessato Gli utenti possono esercitare i propri diritti (accesso, rettifica, cancellazione) contattando il Titolare all'email sopra indicata.
