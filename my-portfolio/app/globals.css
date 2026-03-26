@@ -9,6 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-saira: var(--font-saira);
+  --font-sports: var(--font-sports);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,6 +25,53 @@ body {
   font-family: var(--font-saira), sans-serif;
 }
 
+/* 1. RIMOSSO scroll-behavior: smooth per evitare conflitti con Lenis */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto !important;
+}
+
+/* 2. AGGIUNTO per aiutare Lenis e il browser a gestire le animazioni */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* --- ANIMAZIONI HERO --- */
+
+@keyframes fade-in-delayed {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-fade-in-delayed {
+  opacity: 0; 
+  animation: fade-in-delayed 1.5s ease-in-out 2s forwards; 
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slide-in-right 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }

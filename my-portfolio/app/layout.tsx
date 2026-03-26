@@ -45,6 +45,13 @@ const saira = localFont({
   variable: "--font-saira", // Unica variabile per tutto
 });
 
+// NUOVA Configurazione per Sports World
+const sportsWorld = localFont({
+  src: "./fonts/Sports-World-Regular.ttf", // Assicurati che il file sia esattamente in questa posizione
+  variable: "--font-sports",
+  display: "swap", // Migliora le performance di caricamento
+});
+
 export const metadata: Metadata = {
   title: "FORGE - Build Your Strength",
   description: "La palestra per forgiare il tuo corpo.",
@@ -58,7 +65,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it" className="scroll-smooth overscroll-none">
-      <body className={`${saira.variable} antialiased`}>
+      {/* Abbiamo aggiunto ${sportsWorld.variable} alle classi del body */}
+      <body className={`${saira.variable} ${sportsWorld.variable} antialiased`}>
         {children}
         <SpeedInsights />
       </body>
