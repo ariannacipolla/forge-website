@@ -75,3 +75,14 @@ html.lenis {
   transform: translateX(100%);
   animation: slide-in-right 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
+@keyframes fade-in-arrow {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animate-fade-in-arrow {
+  opacity: 0;
+  /* Appare dolcemente in 1 secondo, ma aspetta 2.5 secondi (il tempo che il testo si animi) */
+  animation: fade-in-arrow 1s ease-in-out 2.5s forwards; 
+}

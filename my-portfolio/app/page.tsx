@@ -304,9 +304,9 @@ export default function Home() {
           ></div>
 
           {/* CONTENITORE PRINCIPALE */}
-          <div className="w-full flex-1 flex flex-col md:flex-row relative z-10 pt-14 md:pt-20 h-full">
+          <div className="w-full flex-1 flex flex-col md:flex-row relative z-10 pt-14 md:pt-18 h-full">
             {/* COLONNA SINISTRA */}
-            <div className="relative flex-1 flex flex-col justify-center px-6 py-10 md:px-12 lg:px-16 overflow-hidden min-h-[100dvh] md:min-h-0">
+            <div className="relative flex-1 flex flex-col justify-center px-6 py-10 md:px-12 pt-8 lg:px-16 overflow-hidden min-h-[calc(100dvh-3.5rem)] md:min-h-0">
               <video
                 autoPlay
                 loop
@@ -318,13 +318,13 @@ export default function Home() {
               </video>
               <div className="absolute inset-0 bg-black/60 z-[5] pointer-events-none"></div>
 
-              {/* ANIMAZIONE A SINISTRA: Testi */}
-              <RevealOnScroll className="relative z-10 space-y-5 lg:space-y-6">
+              {/* ANIMAZIONE A SINISTRA: Testi (Cambiati per Desktop: lg:text-7xl, lg:text-4xl, ecc.) */}
+              <RevealOnScroll className="relative z-10 space-y-5 lg:space-y-8 pb-16 md:pb-0">
                 <div className="space-y-1">
-                  <h2 className="font-black text-5xl lg:text-6xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
+                  <h2 className="font-black text-3xl lg:text-7xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
                     OFFERTA
                   </h2>
-                  <p className="font-medium text-lg lg:text-xl uppercase tracking-widest text-white drop-shadow-md">
+                  <p className="font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
                     con posti limitati
                   </p>
                 </div>
@@ -333,30 +333,30 @@ export default function Home() {
                   <li className="flex items-start gap-4 group">
                     <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
                     <div className="w-full">
-                      <h3 className="text-xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                      <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
                         50 pacchetti base
                       </h3>
-                      <ul className="mt-2 space-y-1.5 text-neutral-300 text-sm lg:text-base font-light">
+                      <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Ingresso in palestra
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Anamnesi iniziale per capire il livello
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Programmazione bilanciata sul livello
+                            Programmazione bilanciata in base al livello
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Masterclass formative
                           </span>
@@ -368,30 +368,31 @@ export default function Home() {
                   <li className="flex items-start gap-4 group">
                     <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
                     <div className="w-full">
-                      <h3 className="text-xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                      <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
                         10 pacchetti forge
                       </h3>
-                      <ul className="mt-2 space-y-1.5 text-neutral-300 text-sm lg:text-base font-light">
+                      <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Ingresso in palestra
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Anamnesi approfondita + piano + 1h coaching a sett.
+                            Anamnesi approfondita + piano di allenamento +
+                            un’ora di coaching a settimana
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Nutrizionista con check bimestrale
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs" />
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
                             Accesso a sauna e bagno turco
                           </span>
@@ -401,21 +402,32 @@ export default function Home() {
                   </li>
                 </ul>
                 <div className="pt-4 border-t border-white/10 max-w-sm">
-                  <p className="text-white/70 text-base lg:text-lg font-bold uppercase tracking-[0.25em] border-l-4 border-[#FF4000] pl-4">
+                  <p className="text-white/70 text-sm lg:text-xl font-bold uppercase tracking-[0.25em] border-l-4 border-[#FF4000] pl-4">
                     Fino al <span className="text-white">4 Aprile</span>
                   </p>
                 </div>
               </RevealOnScroll>
+
+              {/* INDICATORE SCROLL MOBILE CON FADE-IN (Freccia grigio/bianca come hai messo tu) */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20 pointer-events-none animate-fade-in-arrow">
+                <div className="flex flex-col items-center gap-1 animate-bounce">
+                  <span className="text-[10px] text-white/80 uppercase tracking-[0.3em] font-bold drop-shadow-md">
+                    Richiedi Info
+                  </span>
+                  <FaChevronDown className="text-white/80 drop-shadow-md" />
+                </div>
+              </div>
             </div>
 
             {/* COLONNA DESTRA: MODULO */}
-            <div className="relative flex-1 flex items-center justify-center bg-neutral-900 md:bg-transparent px-8 py-12 md:px-16 h-full">
+
+            <div className="relative flex-1 flex items-center justify-center bg-neutral-900 md:bg-transparent px-6 py-6 h-[calc(100dvh-3.5rem)] md:h-full md:py-12 md:px-16">
               {/* ANIMAZIONE A DESTRA: Form ritardato di 200ms per effetto "onda" */}
               <RevealOnScroll delay={200} className="w-full">
-                <div className="bg-white/95 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] shadow-2xl space-y-7 text-neutral-900 border border-white/20 w-full max-w-xl mx-auto">
-                  <h3 className="text-3xl md:text-4xl font-black text-center uppercase tracking-tight mb-10">
+                <div className="bg-white/95 backdrop-blur-xl p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl space-y-5 md:space-y-7 text-neutral-900 border border-white/20 w-full max-w-xl mx-auto">
+                  <h3 className="text-sm md:text-4xl font-black text-center uppercase tracking-tight mb-5">
                     Per maggiori informazioni{" "}
-                    <span className="text-[#FF4000]">contattaci</span>
+                    <span className="text-3xl text-[#FF4000]">contattaci</span>
                   </h3>
 
                   {formStatus === "success" ? (
@@ -444,7 +456,7 @@ export default function Home() {
                         setTimeout(() => setFormStatus("success"), 1000);
                       }}
                     >
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <input
                           type="text"
                           name="nome"
@@ -468,12 +480,12 @@ export default function Home() {
                         className="w-full bg-neutral-200/60 border border-neutral-300/50 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
                       />
 
-                      <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="flex flex-row gap-2 sm:gap-3">
                         {/* Prefisso */}
                         <div className="relative flex items-center shrink-0">
                           <select
                             name="prefisso"
-                            className="w-full sm:w-auto bg-neutral-200/60 border border-neutral-300/50 rounded-full pl-5 pr-10 py-3.5 text-neutral-600 outline-none focus:border-[#FF4000] transition-colors cursor-pointer appearance-none min-w-[120px]"
+                            className="w-auto bg-neutral-200/60 border border-neutral-300/50 rounded-full pl-4 sm:pl-5 pr-8 sm:pr-10 py-3.5 text-sm sm:text-base text-neutral-600 outline-none focus:border-[#FF4000] transition-colors cursor-pointer appearance-none min-w-[100px] sm:min-w-[120px]"
                             defaultValue="+39"
                           >
                             <option value="+39">+39 (IT)</option>
@@ -481,7 +493,7 @@ export default function Home() {
                             <option value="+44">+44 (UK)</option>
                             <option value="+1">+1 (US)</option>
                           </select>
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
+                          <div className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
                             ▼
                           </div>
                         </div>
@@ -492,7 +504,7 @@ export default function Home() {
                           name="telefono"
                           required
                           placeholder="Telefono"
-                          className="flex-1 bg-neutral-200/60 border border-neutral-300/50 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
+                          className="flex-1 min-w-0 w-full bg-neutral-200/60 border border-neutral-300/50 rounded-full px-4 sm:px-6 py-3.5 text-sm sm:text-base outline-none focus:border-[#FF4000] transition-colors"
                         />
                       </div>
 
@@ -500,18 +512,14 @@ export default function Home() {
                         name="informazioni"
                         required
                         placeholder="Di cosa hai bisogno?"
-                        rows={4}
-                        className="w-full bg-neutral-200/60 border border-neutral-300/50 rounded-[1.8rem] px-6 py-5 outline-none resize-none focus:border-[#FF4000] transition-colors"
+                        rows={3}
+                        className="w-full bg-neutral-200/60 border border-neutral-300/50 rounded-[1.5rem] md:rounded-[1.8rem] px-6 py-3 md:py-5 outline-none resize-none focus:border-[#FF4000] transition-colors"
                       />
 
                       <button
                         type="submit"
                         disabled={formStatus === "submitting"}
-                        className="w-full bg-[#FF4000] hover:bg-[#a30000] disabled:bg-neutral-400 text-white font-black py-4.5 rounded-full text-xl uppercase tracking-widest transition-all"
-                        style={{
-                          paddingTop: "1.125rem",
-                          paddingBottom: "1.125rem",
-                        }}
+                        className="w-full bg-[#FF4000] hover:bg-[#a30000] disabled:bg-neutral-400 text-white font-black py-2.5 md:py-[1.125rem] rounded-full text-base md:text-xl uppercase tracking-widest transition-all"
                       >
                         {formStatus === "submitting" ? "Invio..." : "Invia"}
                       </button>
@@ -526,7 +534,7 @@ export default function Home() {
         {/* === SEZIONE 3: CHI SIAMO === */}
         <section
           id="about-section"
-          className="w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-20 md:pb-32 border-t border-white/5 pt-18 md:pt-20 flex flex-col"
+          className="w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-10 md:pb-32 border-t border-white/5 pt-15 md:pt-18 flex flex-col"
         >
           {/* SLIDER IMMAGINI (In alto) */}
           <div className="relative w-full h-[30vh] md:h-[45vh] overflow-hidden group shrink-0">
@@ -562,14 +570,19 @@ export default function Home() {
           </div>
 
           {/* TESTO DESCRIZIONE: STORIA E FONDATORI */}
-          <div className="max-w-7xl mx-auto px-6 pt-12 md:pt-20 lg:px-12 flex-1 flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-20 items-start w-full">
+          <div className="max-w-7xl mx-auto px-6 pt-8 md:pt-12 lg:px-12 flex-1 flex flex-col md:flex-row gap-2 md:gap-16 lg:gap-20 items-start w-full">
             {/* ANIMAZIONE TITOLO STORIA */}
             <RevealOnScroll className="w-full md:w-1/4 shrink-0 space-y-5">
               <h2 className="font-black text-4xl md:text-5xl lg:text-6xl text-white uppercase tracking-tight leading-none">
-                La Nostra <br /> <span className="text-[#FF4000]">Storia</span>
+                La Nostra <br className="hidden md:block" />{" "}
+                <span className="text-[#FF4000]">Storia</span>
               </h2>
-              <div className="w-16 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
-              <p className="text-base md:text-lg text-neutral-300 font-medium uppercase tracking-widest pt-2">
+
+              {/* Nascosto su mobile, visibile su desktop */}
+              <div className="hidden md:block w-16 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
+
+              {/* Nascosto su mobile, visibile su desktop */}
+              <p className="hidden md:block text-base md:text-lg text-neutral-300 font-medium uppercase tracking-widest pt-2">
                 Come nasce Forge.
               </p>
             </RevealOnScroll>
@@ -583,13 +596,12 @@ export default function Home() {
                     L'idea
                   </h4>
                   <p className="text-sm md:text-base text-neutral-400 font-light leading-relaxed">
-                    Tutto è partito da un'esigenza che sentivamo in prima
-                    persona. Eravamo stanchi delle solite sale pesi dispersive e
-                    prive di una vera identità. L'idea di{" "}
-                    <strong className="text-white font-bold">Forge</strong>{" "}
-                    nasce proprio da qui: creare una vera e propria "fucina"
-                    esclusiva, pensata per chi vuole costruire la propria forza
-                    senza scendere a compromessi.
+                    FORGE porta l’allenamento oltre la semplice attività fisica.
+                    Fondata su disciplina, costanza e rispetto, è uno spazio
+                    senza differenze in cui l'obiettivo comune è diventare la
+                    versione migliore di sé stessi. Chi entra da noi non è un
+                    semplice cliente, ma parte di una vera community dove il
+                    lavoro individuale diventa forza collettiva.
                   </p>
                 </div>
               </RevealOnScroll>
@@ -602,11 +614,12 @@ export default function Home() {
                     I Fondatori
                   </h4>
                   <p className="text-sm md:text-base text-neutral-400 font-light leading-relaxed">
-                    Siamo [Nome 1] e [Nome 2], uniti dalla passione per il
-                    fitness e la ghisa. Integer in mauris eu nibh euismod
-                    gravida. Duis ac tellus et risus vulputate vehicula. Donec
-                    lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula
-                    eu tempor congue, eros est euismod turpis.
+                    Siamo Antonino, Gabriel ed Emanuele, tre ragazzi uniti dalla
+                    passione per l’allenamento e il miglioramento continuo.
+                    Unendo le forze abbiamo creato FORGE per trasformare il
+                    nostro sogno in realtà. Vogliamo condividere con voi una
+                    nuova mentalità basata su disciplina, costanza e rispetto:
+                    la vera fucina dove l'impegno prende forma ogni giorno
                   </p>
                 </div>
               </RevealOnScroll>
@@ -617,10 +630,10 @@ export default function Home() {
         {/* === SEZIONE 4: CONTATTI E FOOTER === */}
         <section
           id="footer-contatti"
-          className="w-full min-h-screen flex flex-col bg-neutral-950 relative pt-18 md:pt-20 border-t border-white/5"
+          className="w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"
         >
           {/* === CONTATTI === */}
-          <div className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-24 flex flex-col md:flex-row gap-12 lg:gap-16 items-center md:items-stretch">
+          <div className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-24 flex flex-col md:flex-row gap-8 lg:gap-16 items-center md:items-stretch">
             {/* ANIMAZIONE CONTATTI (Appare prima la lista a sinistra) */}
             <RevealOnScroll className="w-full md:w-1/2 flex flex-col justify-center space-y-10 lg:space-y-14">
               <div className="space-y-4">
@@ -630,7 +643,7 @@ export default function Home() {
                 <div className="w-20 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
               </div>
 
-              <div className="flex flex-col gap-4 text-neutral-300 text-lg font-light">
+              <div className="flex flex-col text-neutral-300 text-lg font-light">
                 <a
                   href={MAPS_URL}
                   target="_blank"
@@ -693,10 +706,13 @@ export default function Home() {
               delay={200}
               className="w-full md:w-1/2 min-h-[400px] md:min-h-0 relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group"
             >
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
+              {/* Overlay nero: trasparente su mobile, scuro su desktop (e trasparente all'hover) */}
+              <div className="absolute inset-0 bg-transparent md:bg-black/30 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
+
+              {/* Mappa: colori originali su mobile, desaturata su desktop (e originale all'hover) */}
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2793.5935611488117!2d9.793798576661413!3d45.75929311370259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47815b3e2154316d%3A0xc6c76db36dccbb8a!2sVia%20Isla%2C%2016%2C%2024021%20Albino%20BG!5e0!3m2!1sit!2sit!4v1711446700000!5m2!1sit!2sit"
-                className="absolute inset-0 w-full h-full grayscale-[60%] opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                className="absolute inset-0 w-full h-full grayscale-0 opacity-100 md:grayscale-[60%] md:opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
