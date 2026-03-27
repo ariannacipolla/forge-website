@@ -68,6 +68,8 @@ export default function Home() {
 
   const [activeSection, setActiveSection] = useState("home");
 
+  const [mapCookiesAccepted, setMapCookiesAccepted] = useState(false);
+
   const [aboutSlide, setAboutSlide] = useState(0);
   const aboutSlides = [
     {
@@ -115,6 +117,13 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const accepted = localStorage.getItem("mapCookiesAccepted");
+    if (accepted === "true") {
+      setMapCookiesAccepted(true);
+    }
+  }, []);
+
   const INSTAGRAM_URL = "https://www.instagram.com/__.forge.__";
   const MAPS_URL = "https://maps.app.goo.gl/24nCLzWAkCVnYkeA8";
 
@@ -138,6 +147,11 @@ export default function Home() {
     } else {
       targetElement.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleAcceptMapCookies = () => {
+    localStorage.setItem("mapCookiesAccepted", "true");
+    setMapCookiesAccepted(true);
   };
 
   return (
@@ -707,6 +721,32 @@ export default function Home() {
               delay={200}
               className="w-full md:w-1/2 min-h-[400px] md:min-h-0 relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group"
             >
+              {/* Overlay messaggio cookie - solo se non ancora accettati */}
+              {!mapCookiesAccepted && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-neutral-900/90 backdrop-blur-md p-6 text-center">
+                  <FaMapMarkerAlt className="text-4xl text-[#FF4000] mb-4" />
+                  <p className="text-white font-medium mb-4 max-w-xs">
+                    Per visualizzare la mappa, accetta i cookie di Google
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={handleAcceptMapCookies}
+                      className="bg-[#FF4000] hover:bg-[#a30000] text-white font-bold py-3 px-6 rounded-full transition-colors"
+                    >
+                      Accetta cookie
+                    </button>
+                    <a
+                      href={MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border border-white/30 hover:border-white/60 text-white font-bold py-3 px-6 rounded-full transition-colors"
+                    >
+                      Apri in Maps
+                    </a>
+                  </div>
+                </div>
+              )}
+
               {/* Overlay nero: trasparente su mobile, scuro su desktop (e trasparente all'hover) */}
               <div className="absolute inset-0 bg-transparent md:bg-black/30 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
 
