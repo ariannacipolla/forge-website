@@ -440,9 +440,11 @@ export default function Home() {
               {/* ANIMAZIONE A DESTRA: Form ritardato di 200ms per effetto "onda" */}
               <RevealOnScroll delay={200} className="w-full">
                 <div className="bg-white/95 backdrop-blur-xl p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl space-y-5 md:space-y-7 text-neutral-900 border border-white/20 w-full max-w-xl mx-auto">
-                  <h3 className="text-sm md:text-4xl font-black text-center uppercase tracking-tight mb-5">
+                  <h3 className="text-sm md:text-3xl font-black text-center uppercase tracking-tight mb-5">
                     Per maggiori informazioni{" "}
-                    <span className="text-3xl text-[#FF4000]">contattaci</span>
+                    <span className="text-3xl md:text-4xl text-[#FF4000]">
+                      contattaci
+                    </span>
                   </h3>
 
                   {formStatus === "success" ? (
