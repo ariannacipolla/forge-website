@@ -55,7 +55,12 @@ const sportsWorld = localFont({
 export const metadata: Metadata = {
   title: "FORGE - Build Your Strength",
   description: "La palestra per forgiare il tuo corpo.",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
