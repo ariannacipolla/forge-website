@@ -712,7 +712,7 @@ export default function Home() {
 
               {/* Mappa: colori originali su mobile, desaturata su desktop (e originale all'hover) */}
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2793.5935611488117!2d9.793798576661413!3d45.75929311370259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47815b3e2154316d%3A0xc6c76db36dccbb8a!2sVia%20Isla%2C%2016%2C%2024021%20Albino%20BG!5e0!3m2!1sit!2sit!4v1711446700000!5m2!1sit!2sit"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d596.5875744894458!2d9.8142509!3d45.7739697!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4781588e5cd4d803%3A0xfb3526c971441a56!2sVia%20Isla%2C%2016%2C%2024021%20Albino%20BG!5e1!3m2!1sit!2sit!4v1774613232406!5m2!1sit!2sit"
                 className="absolute inset-0 w-full h-full grayscale-0 opacity-100 md:grayscale-[60%] md:opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
                 style={{ border: 0 }}
                 allowFullScreen
