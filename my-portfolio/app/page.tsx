@@ -75,8 +75,8 @@ export default function Home() {
       position: "object-[50%_40%]",
     },
     {
-      src: "/FORGE-3.jpg",
-      position: "object-[50%_35%]",
+      src: "/FORGE-2.jpg",
+      position: "object-[50%_25%]",
     },
   ];
 
@@ -769,6 +769,7 @@ export default function Home() {
                     </a>
                   </div>
 
+                  {/* Link Legali Iubenda */}
                   <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm font-medium text-neutral-500">
                     <a
                       href="https://www.iubenda.com/privacy-policy/73809111"
@@ -785,15 +786,22 @@ export default function Home() {
                     >
                       Cookie Policy
                     </a>
-
-                    <a href="#" className="hover:text-white transition-colors">
-                      Termini e Condizioni
-                    </a>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] md:text-xs font-medium tracking-wider text-neutral-600 uppercase">
+              {/* DISCLAIMER INFORMATIVO (Sostituisce Termini e Condizioni) */}
+              <div className="mt-4 pt-3 border-t border-white/5">
+                <p className="text-[10px] md:text-xs leading-relaxed text-neutral-500 font-light max-w-4xl">
+                  Le informazioni e le promozioni indicate sul sito hanno scopo
+                  puramente illustrativo e non costituiscono proposta
+                  contrattuale. L'offerta è soggetta a disponibilità limitata e
+                  la sottoscrizione del servizio avviene esclusivamente presso
+                  la sede fisica previa verifica dei requisiti.
+                </p>
+              </div>
+
+              <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] md:text-xs font-medium tracking-wider text-neutral-600 uppercase">
                 <p>
                   © {new Date().getFullYear()} FRG Srl. Tutti i diritti
                   riservati.
