@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
+import Script from "next/script";
 
 // --- NUOVO COMPONENTE DI ANIMAZIONE: REVEAL ON SCROLL ---
 // Avvolgi qualsiasi elemento in <RevealOnScroll> per farlo apparire dolcemente
@@ -769,12 +770,22 @@ export default function Home() {
                   </div>
 
                   <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm font-medium text-neutral-500">
-                    <a href="#" className="hover:text-white transition-colors">
+                    <a
+                      href="https://www.iubenda.com/privacy-policy/73809111"
+                      className="iubenda-nostyle iubenda-noiframe iubenda-embed hover:text-white transition-colors"
+                      title="Privacy Policy"
+                    >
                       Privacy Policy
                     </a>
-                    <a href="#" className="hover:text-white transition-colors">
+
+                    <a
+                      href="https://www.iubenda.com/privacy-policy/73809111/cookie-policy"
+                      className="iubenda-nostyle iubenda-noiframe iubenda-embed hover:text-white transition-colors"
+                      title="Cookie Policy"
+                    >
                       Cookie Policy
                     </a>
+
                     <a href="#" className="hover:text-white transition-colors">
                       Termini e Condizioni
                     </a>
@@ -794,6 +805,15 @@ export default function Home() {
             </div>
           </footer>
         </section>
+        <Script
+          src="https://embeds.iubenda.com/widgets/058c2eba-1f08-4980-8ef7-e8f6e2b32379.js"
+          strategy="afterInteractive"
+        />
+        {/* MOTORE POPUP POLICY IUBENDA */}
+        <Script
+          src="https://cdn.iubenda.com/iubenda.js"
+          strategy="lazyOnload"
+        />
       </main>
     </ReactLenis>
   );
