@@ -361,7 +361,7 @@ export default function Home() {
                         <li className="flex items-start gap-2 group/item">
                           <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
                           <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Anamnesi iniziale per capire il livello
+                            Anamnesi iniziale per capire lo storico allenante
                           </span>
                         </li>
                         <li className="flex items-start gap-2 group/item">
