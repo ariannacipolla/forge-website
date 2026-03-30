@@ -17,6 +17,7 @@ import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 import Script from "next/script";
 
 import { Analytics } from "@vercel/analytics/react";
+import { track } from "@vercel/analytics";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // --- NUOVO COMPONENTE DI ANIMAZIONE: REVEAL ON SCROLL ---
@@ -103,11 +104,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Usiamo un Set per tracciare ogni sezione una sola volta per visita
+    const trackedSections = new Set<string>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+            const sectionId = entry.target.id;
+            setActiveSection(sectionId);
+
+            // Se la sezione non è ancora stata tracciata, invia l'evento a Vercel
+            if (!trackedSections.has(sectionId)) {
+              track("Section_Viewed", { section: sectionId });
+              trackedSections.add(sectionId); // Segnala come già vista
+            }
           }
         });
       },
