@@ -16,6 +16,9 @@ import {
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 import Script from "next/script";
 
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 // --- NUOVO COMPONENTE DI ANIMAZIONE: REVEAL ON SCROLL ---
 // Avvolgi qualsiasi elemento in <RevealOnScroll> per farlo apparire dolcemente
 function RevealOnScroll({
@@ -864,6 +867,9 @@ export default function Home() {
           src="https://cdn.iubenda.com/iubenda.js"
           strategy="lazyOnload"
         />
+
+        <Analytics debug={true} />
+        <SpeedInsights />
       </main>
     </ReactLenis>
   );
