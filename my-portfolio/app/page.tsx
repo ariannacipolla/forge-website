@@ -868,7 +868,7 @@ export default function Home() {
           strategy="lazyOnload"
         />
 
-        <Analytics debug={true} mode={"development"} />
+        <Analytics />
         <SpeedInsights />
       </main>
     </ReactLenis>
