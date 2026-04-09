@@ -53,8 +53,26 @@ const sportsWorld = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FORGE - Build Your Strength",
-  description: "La palestra per forgiare il tuo corpo.",
+  title: "FORGE | Palestra ad Albino (BG) - Build Your Strength",
+  description:
+    "Scopri FORGE ad Albino (BG). Molto più di una semplice palestra: una community dedicata al tuo miglioramento con programmazione, coaching e area benessere.",
+  openGraph: {
+    title: "FORGE | Palestra ad Albino (BG)",
+    description:
+      "Scopri FORGE ad Albino (BG). Molto più di una semplice palestra: una community dedicata al tuo miglioramento con programmazione, coaching e area benessere.",
+    url: "https://www.forgebuildyourstrength.com",
+    siteName: "FORGE",
+    images: [
+      {
+        url: "/FORGE-4.jpg", // Usa l'immagine che hai già nel tuo slider
+        width: 1200,
+        height: 630,
+        alt: "Sala pesi Palestra FORGE ad Albino",
+      },
+    ],
+    locale: "it_IT",
+    type: "website",
+  },
 };
 
 export const viewport = {
