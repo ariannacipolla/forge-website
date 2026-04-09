@@ -483,8 +483,33 @@ export default function Home() {
                       onSubmit={async (e) => {
                         e.preventDefault();
                         setFormStatus("submitting");
-                        // logica ...
-                        setTimeout(() => setFormStatus("success"), 1000);
+
+                        // Raccogliamo i dati dai campi del form
+                        const formData = new FormData(e.currentTarget);
+                        const data = Object.fromEntries(formData.entries());
+
+                        try {
+                          // Chiamiamo la rotta API (assicurati che il percorso sia giusto, es: /api/send)
+                          const response = await fetch("/api/send", {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(data),
+                          });
+
+                          if (response.ok) {
+                            setFormStatus("success");
+                          } else {
+                            setFormStatus("error");
+                            alert(
+                              "C'è stato un problema con l'invio. Riprova.",
+                            );
+                          }
+                        } catch (error) {
+                          setFormStatus("error");
+                          alert("Errore di connessione.");
+                        }
                       }}
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
