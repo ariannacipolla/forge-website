@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Countdown from "./components/Countdown";
 import {
   FaInstagram,
   FaChevronDown,
@@ -203,7 +202,7 @@ export default function Home() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2">
             <ul className="flex gap-8 text-sm uppercase tracking-[0.2em] font-medium text-gray-200">
-              {["home", "offerta", "about-section", "footer-contatti"].map(
+              {["home", "pacchetti", "about-section", "footer-contatti"].map(
                 (id) => (
                   <li key={id}>
                     <a
@@ -260,7 +259,7 @@ export default function Home() {
         >
           <nav className="h-full w-full flex flex-col items-center justify-center px-10">
             <ul className="flex flex-col gap-8 w-full">
-              {["home", "offerta", "about-section", "footer-contatti"].map(
+              {["home", "pacchetti", "about-section", "footer-contatti"].map(
                 (id) => (
                   <li key={id} className="w-full text-center">
                     <a
@@ -307,9 +306,6 @@ export default function Home() {
           id="home"
           className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
-          <div className="text-white relative z-10 w-full max-w-4xl flex flex-col items-center justify-center animate-fade-in-delayed">
-            <Countdown targetDate="2026-04-04T14:30:00" />
-          </div>
           <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none select-none flex justify-center pb-2 md:pb-4">
             <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH
@@ -317,9 +313,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === SEZIONE 2: OFFERTA === */}
+        {/* === SEZIONE 2: pacchetti === */}
         <section
-          id="offerta"
+          id="pacchetti"
           className="w-full h-auto min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] flex flex-col bg-neutral-950 relative overflow-hidden"
         >
           <div className="absolute inset-0 from-gray-900/40 via-neutral-950 to-neutral-950 z-0 pointer-events-none"></div>
@@ -351,10 +347,10 @@ export default function Home() {
               <RevealOnScroll className="relative z-10 space-y-5 lg:space-y-8 pb-16 md:pb-0">
                 <div className="space-y-1">
                   <h2 className="font-black text-3xl lg:text-7xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
-                    OFFERTA
+                    PACCHETTI
                   </h2>
                   <p className="font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
-                    con posti limitati
+                    offriamo molto di più di una semplice palestra
                   </p>
                 </div>
 
@@ -363,7 +359,7 @@ export default function Home() {
                     <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
                     <div className="w-full">
                       <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
-                        50 pacchetti base
+                        pacchetti base
                       </h3>
                       <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
                         <li className="flex items-start gap-2 group/item">
@@ -398,7 +394,7 @@ export default function Home() {
                     <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
                     <div className="w-full">
                       <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
-                        10 pacchetti forge
+                        pacchetti forge
                       </h3>
                       <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
                         <li className="flex items-start gap-2 group/item">
@@ -430,11 +426,6 @@ export default function Home() {
                     </div>
                   </li>
                 </ul>
-                <div className="pt-4 border-t border-white/10 max-w-sm">
-                  <p className="text-white/70 text-sm lg:text-xl font-bold uppercase tracking-[0.25em] border-l-4 border-[#FF4000] pl-4">
-                    Fino al <span className="text-white">4 Aprile</span>
-                  </p>
-                </div>
               </RevealOnScroll>
 
               {/* INDICATORE SCROLL MOBILE CON FADE-IN (Freccia grigio/bianca come hai messo tu) */}
