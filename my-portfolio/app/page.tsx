@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Countdown from "./components/Countdown";
 import {
   FaInstagram,
   FaChevronDown,
@@ -307,9 +306,6 @@ export default function Home() {
           id="home"
           className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
-          <div className="text-white relative z-10 w-full max-w-4xl flex flex-col items-center justify-center animate-fade-in-delayed">
-            <Countdown targetDate="2026-04-04T14:30:00" />
-          </div>
           <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none select-none flex justify-center pb-2 md:pb-4">
             <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH
