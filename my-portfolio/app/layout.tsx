@@ -56,15 +56,22 @@ export const metadata: Metadata = {
   title: "FORGE | Palestra ad Albino (BG) - Build Your Strength",
   description:
     "Scopri FORGE ad Albino (BG). Molto più di una semplice palestra: una community dedicata al tuo miglioramento con programmazione, coaching e area benessere.",
+  
+  alternates: {
+    canonical: "https://forgebuildyourstrength.com",
+  },
+  
   openGraph: {
     title: "FORGE | Palestra ad Albino (BG)",
     description:
       "Scopri FORGE ad Albino (BG). Molto più di una semplice palestra: una community dedicata al tuo miglioramento con programmazione, coaching e area benessere.",
-    url: "https://www.forgebuildyourstrength.com",
+    
+    url: "https://forgebuildyourstrength.com", 
+    
     siteName: "FORGE",
     images: [
       {
-        url: "/FORGE-4.jpg", // Usa l'immagine che hai già nel tuo slider
+        url: "/FORGE-4.jpg",
         width: 1200,
         height: 630,
         alt: "Sala pesi Palestra FORGE ad Albino",
