@@ -173,7 +173,11 @@ export default function Home() {
     const href = e.currentTarget.getAttribute("href");
     if (!href) return;
 
-    const targetId = href.substring(1);
+    let targetId = href.substring(1);
+    if (targetId === "promo-estate" && window.innerWidth >= 768) {
+      targetId = "pacchetti";
+    }
+
     const targetElement = document.getElementById(targetId);
 
     if (!targetElement) return;
@@ -183,6 +187,8 @@ export default function Home() {
     if (lenis) {
       lenis.scrollTo(targetElement, {
         duration: 1.5,
+        // Se in futuro vorrai "staccare" un po' la sezione dal menu in alto,
+        // puoi aggiungere qui: offset: -80,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     } else {
@@ -336,13 +342,15 @@ export default function Home() {
         >
           <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
             {/* BADGE PROMO ESTATE CON BORDO SFUMATO */}
-            <div className="mb-4 md:mb-8 rounded-full p-[1px] bg-gradient-to-r from-transparent via-[#FF4000] to-transparent animate-pulse shadow-[0_0_15px_rgba(255,64,0,0.3)] hover:shadow-[0_0_25px_rgba(255,64,0,0.5)] transition-all duration-300">
+            <div className="mb-4 md:mb-8 pointer-events-auto">
               <a
-                href="#pacchetti"
+                href="#promo-estate"
                 onClick={handleScroll}
-                className="block px-6 py-2.5 rounded-full bg-black/40 backdrop-blur-md text-white font-bold text-sm md:text-base uppercase tracking-widest hover:bg-[#FF4000]/80 transition-all duration-300 pointer-events-auto"
+                className="relative inline-flex items-center justify-center px-8 py-3 rounded-full bg-black/50 backdrop-blur-sm text-white font-bold text-sm md:text-base uppercase tracking-widest border border-white/5 hover:border-[#FF4000] transition-all duration-300 hover:bg-[#FF4000]/10 hover:shadow-[0_0_25px_rgba(255,64,0,0.4)] group"
               >
-                Scopri la Promo Estate
+                <span className="group-hover:text-[#FF4000] transition-colors duration-300">
+                  Scopri la Promo Estate
+                </span>
               </a>
             </div>
 
@@ -479,61 +487,64 @@ export default function Home() {
               </div>
             </div>
 
-            {/* COLONNA DESTRA: MODULO */}
-
             {/* COLONNA DESTRA: PROMO ESTATE E BOTTONE INFO */}
-            <div className="relative flex-1 flex items-center justify-center bg-neutral-900 md:bg-transparent px-6 py-6 h-[calc(100dvh-3.5rem)] md:h-full md:py-12 md:px-16">
+            <div
+              id="promo-estate"
+              className="relative flex-1 flex flex-col items-center justify-center bg-neutral-900 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
+            >
               <RevealOnScroll
                 delay={200}
-                className="w-full max-w-xl mx-auto flex flex-col gap-6"
+                className="w-full max-w-xl mx-auto flex flex-col gap-4 md:gap-6"
               >
                 {/* BOX PROMO ESTATE (Standalone) */}
-                <div className="relative p-6 md:p-8 rounded-[2.5rem] border border-[#FF4000]/40 bg-gradient-to-br from-black/80 to-[#FF4000]/10 backdrop-blur-md overflow-hidden shadow-2xl">
+                {/* Su mobile padding ridotto a p-5, border-radius ridotto */}
+                <div className="relative p-5 sm:p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-[#FF4000]/40 bg-gradient-to-br from-black/80 to-[#FF4000]/10 backdrop-blur-md overflow-hidden shadow-2xl">
                   {/* Effetto Glow di sfondo */}
                   <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#FF4000]/20 blur-3xl rounded-full pointer-events-none" />
 
                   <div className="w-full relative z-10">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                      <h3 className="text-3xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-3 mb-3 md:mb-4">
+                      <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md">
                         Promo <span className="text-[#FF4000]">Estate</span>
                       </h3>
-                      <span className="text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-3 py-1.5 rounded-full uppercase tracking-widest self-start sm:self-center shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
+                      <span className="text-[9px] md:text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full uppercase tracking-widest self-start sm:self-center shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
                         Tempo Limitato!
                       </span>
                     </div>
 
-                    <p className="text-neutral-300 font-medium text-sm lg:text-base mb-6 uppercase tracking-wider">
-                      Allenati per tutta l'estate in un ambiente vero.
+                    <p className="text-neutral-300 font-medium text-xs md:text-sm lg:text-base mb-4 md:mb-6 uppercase tracking-wider">
+                      Allenati per tutta l'estate senza pensieri.
                     </p>
 
                     {/* Box Prezzi Sbarrati */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                      <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-neutral-400 text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
+                    {/* Su mobile gap ridotto e padding interno ridotto */}
+                    <div className="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
+                      <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center justify-center text-center">
+                        <span className="text-neutral-400 text-[10px] md:text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
                           Iscrizione
                         </span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <span className="text-lg md:text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
                             40€
                           </span>
-                          <span className="text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                          <span className="text-3xl md:text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                             15€
                           </span>
                         </div>
-                        <span className="text-[10px] text-[#FF4000] mt-1 uppercase font-bold tracking-wider">
+                        <span className="text-[8px] md:text-[10px] text-[#FF4000] mt-1 uppercase font-bold tracking-wider">
                           (Niente Tessera)
                         </span>
                       </div>
 
-                      <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-neutral-400 text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
+                      <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center justify-center text-center">
+                        <span className="text-neutral-400 text-[10px] md:text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
                           Mensile
                         </span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <span className="text-lg md:text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
                             54,90€
                           </span>
-                          <span className="text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                          <span className="text-3xl md:text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
                             35€
                           </span>
                         </div>
@@ -541,21 +552,21 @@ export default function Home() {
                     </div>
 
                     {/* Vantaggi */}
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-neutral-300 text-xs lg:text-sm font-medium uppercase tracking-wider bg-black/30 p-4 rounded-2xl border border-white/5">
-                      <li className="flex items-center gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 md:gap-3 text-neutral-300 text-[10px] md:text-xs lg:text-sm font-medium uppercase tracking-wider bg-black/30 p-3 md:p-4 rounded-xl md:rounded-2xl border border-white/5">
+                      <li className="flex items-center gap-2 md:gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
                         <span>Energia ogni giorno</span>
                       </li>
-                      <li className="flex items-center gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <li className="flex items-center gap-2 md:gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
                         <span>Corpo in forma</span>
                       </li>
-                      <li className="flex items-center gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <li className="flex items-center gap-2 md:gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
                         <span>Mente focalizzata</span>
                       </li>
-                      <li className="flex items-center gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <li className="flex items-center gap-2 md:gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
                         <span>Risultati reali</span>
                       </li>
                     </ul>
@@ -563,11 +574,12 @@ export default function Home() {
                 </div>
 
                 {/* BOTTONE PER APRIRE IL POPUP */}
+                {/* Su mobile padding Y ridotto (py-3 invece di py-4) e testo text-base */}
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-4 rounded-full text-lg md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
+                  className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-3 md:py-4 rounded-full text-base md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
                 >
-                  Richiedi Informazioni
+                  Richiedi Info
                 </button>
               </RevealOnScroll>
             </div>
@@ -581,7 +593,7 @@ export default function Home() {
         >
           {/* SLIDER IMMAGINI (In alto) */}
           {/* === DOPPIO SLIDER IMMAGINI (Community / Struttura) === */}
-          <div className="w-full h-[50vh] md:h-[45vh] flex flex-col md:flex-row shrink-0 border-b border-white/5">
+          <div className="w-full h-[50vh] md:h-[40vh] flex flex-col md:flex-row shrink-0 border-b border-white/5">
             {/* SINISTRA: COMMUNITY */}
             <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden group">
               {communitySlides.map((slide, index) => (
@@ -956,7 +968,8 @@ export default function Home() {
 
             {/* IL TUO FORM ORIGINALE (Leggermente adattato ai colori su sfondo bianco) */}
             <h3 className="text-2xl md:text-3xl font-black text-center text-neutral-900 uppercase tracking-tight mb-6">
-              Inviaci una <span className="text-[#FF4000]">richiesta</span>
+              Inviaci una <br className="block md:hidden" />
+              <span className="text-[#FF4000]">richiesta</span>
             </h3>
 
             {formStatus === "success" ? (
