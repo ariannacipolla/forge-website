@@ -69,30 +69,58 @@ export default function Home() {
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
+  // Stato per il popup del form
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Blocca lo scorrimento della pagina quando il popup è aperto
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isModalOpen]);
+
   const [activeSection, setActiveSection] = useState("home");
 
   const [mapCookiesAccepted, setMapCookiesAccepted] = useState(false);
 
-  const [aboutSlide, setAboutSlide] = useState(0);
-  const aboutSlides = [
-    {
-      src: "/FORGE-4.jpg",
-      position: "object-[50%_40%]",
-    },
-    {
-      src: "/FORGE-2.jpg",
-      position: "object-[50%_25%]",
-    },
+  const [communitySlide, setCommunitySlide] = useState(0);
+  const [facilitySlide, setFacilitySlide] = useState(0);
+
+  const communitySlides = [
+    { src: "/FORGE-1.jpg", position: "object-[50%_40%]" },
+    { src: "/FORGE-2.jpeg", position: "object-[50%_25%]" },
+    { src: "/FORGE-3.jpeg", position: "object-[50%_15%]" },
+  ];
+
+  const facilitySlides = [
+    { src: "/FORGE-4.jpeg", position: "object-center" },
+    { src: "/FORGE-5.jpeg", position: "object-[50%_58%]" },
+    { src: "/FORGE-6.jpeg" },
   ];
 
   const lenis = useLenis();
 
   useEffect(() => {
-    const slideTimer = setInterval(() => {
-      setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
+    const commTimer = setInterval(() => {
+      setCommunitySlide((prev) =>
+        prev === communitySlides.length - 1 ? 0 : prev + 1,
+      );
     }, 5000);
-    return () => clearInterval(slideTimer);
-  }, [aboutSlides.length]);
+    const facTimer = setInterval(() => {
+      setFacilitySlide((prev) =>
+        prev === facilitySlides.length - 1 ? 0 : prev + 1,
+      );
+    }, 5500);
+    return () => {
+      clearInterval(commTimer);
+      clearInterval(facTimer);
+    };
+  }, [communitySlides.length, facilitySlides.length]);
 
   useEffect(() => {
     const handleScrollBg = () => {
@@ -306,8 +334,20 @@ export default function Home() {
           id="home"
           className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none select-none flex justify-center pb-2 md:pb-4">
-            <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right">
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
+            {/* BADGE PROMO ESTATE CON BORDO SFUMATO */}
+            <div className="mb-4 md:mb-8 rounded-full p-[1px] bg-gradient-to-r from-transparent via-[#FF4000] to-transparent animate-pulse shadow-[0_0_15px_rgba(255,64,0,0.3)] hover:shadow-[0_0_25px_rgba(255,64,0,0.5)] transition-all duration-300">
+              <a
+                href="#pacchetti"
+                onClick={handleScroll}
+                className="block px-6 py-2.5 rounded-full bg-black/40 backdrop-blur-md text-white font-bold text-sm md:text-base uppercase tracking-widest hover:bg-[#FF4000]/80 transition-all duration-300 pointer-events-auto"
+              >
+                Scopri la Promo Estate
+              </a>
+            </div>
+
+            {/* TITOLO PRINCIPALE */}
+            <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right pointer-events-none select-none">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH
             </h1>
           </div>
@@ -441,113 +481,94 @@ export default function Home() {
 
             {/* COLONNA DESTRA: MODULO */}
 
+            {/* COLONNA DESTRA: PROMO ESTATE E BOTTONE INFO */}
             <div className="relative flex-1 flex items-center justify-center bg-neutral-900 md:bg-transparent px-6 py-6 h-[calc(100dvh-3.5rem)] md:h-full md:py-12 md:px-16">
-              {/* ANIMAZIONE A DESTRA: Form ritardato di 200ms per effetto "onda" */}
-              <RevealOnScroll delay={200} className="w-full">
-                <div className="bg-white/95 backdrop-blur-xl p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl space-y-5 md:space-y-7 text-neutral-900 border border-white/20 w-full max-w-xl mx-auto">
-                  <h3 className="text-sm md:text-3xl font-black text-center uppercase tracking-tight mb-5">
-                    Per maggiori informazioni{" "}
-                    <span className="text-3xl md:text-4xl text-[#FF4000]">
-                      contattaci
-                    </span>
-                  </h3>
+              <RevealOnScroll
+                delay={200}
+                className="w-full max-w-xl mx-auto flex flex-col gap-6"
+              >
+                {/* BOX PROMO ESTATE (Standalone) */}
+                <div className="relative p-6 md:p-8 rounded-[2.5rem] border border-[#FF4000]/40 bg-gradient-to-br from-black/80 to-[#FF4000]/10 backdrop-blur-md overflow-hidden shadow-2xl">
+                  {/* Effetto Glow di sfondo */}
+                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#FF4000]/20 blur-3xl rounded-full pointer-events-none" />
 
-                  {formStatus === "success" ? (
-                    <div className="text-center py-10 space-y-4">
-                      <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
-                        <FaCheck />
-                      </div>
-                      <h4 className="text-2xl font-bold">Richiesta inviata!</h4>
-                      <p className="text-neutral-600">
-                        Ti abbiamo inviato i dettagli via email. A presto!
-                      </p>
-                      <button
-                        onClick={() => setFormStatus("idle")}
-                        className="mt-6 text-[#FF4000] font-bold underline"
-                      >
-                        Invia un'altra richiesta
-                      </button>
+                  <div className="w-full relative z-10">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                      <h3 className="text-3xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                        Promo <span className="text-[#FF4000]">Estate</span>
+                      </h3>
+                      <span className="text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-3 py-1.5 rounded-full uppercase tracking-widest self-start sm:self-center shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
+                        Tempo Limitato!
+                      </span>
                     </div>
-                  ) : (
-                    <form
-                      className="space-y-5"
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        setFormStatus("submitting");
-                        // logica ...
-                        setTimeout(() => setFormStatus("success"), 1000);
-                      }}
-                    >
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input
-                          type="text"
-                          name="nome"
-                          required
-                          placeholder="Nome"
-                          className="bg-neutral-200/60 border border-neutral-300/50 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
-                        />
-                        <input
-                          type="text"
-                          name="cognome"
-                          required
-                          placeholder="Cognome"
-                          className="bg-neutral-200/60 border border-neutral-300/50 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
-                        />
-                      </div>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="Email"
-                        className="w-full bg-neutral-200/60 border border-neutral-300/50 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
-                      />
 
-                      <div className="flex flex-row gap-2 sm:gap-3">
-                        {/* Prefisso */}
-                        <div className="relative flex items-center shrink-0">
-                          <select
-                            name="prefisso"
-                            className="w-auto bg-neutral-200/60 border border-neutral-300/50 rounded-full pl-4 sm:pl-5 pr-8 sm:pr-10 py-3.5 text-sm sm:text-base text-neutral-600 outline-none focus:border-[#FF4000] transition-colors cursor-pointer appearance-none min-w-[100px] sm:min-w-[120px]"
-                            defaultValue="+39"
-                          >
-                            <option value="+39">+39 (IT)</option>
-                            <option value="+41">+41 (CH)</option>
-                            <option value="+44">+44 (UK)</option>
-                            <option value="+1">+1 (US)</option>
-                          </select>
-                          <div className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
-                            ▼
-                          </div>
+                    <p className="text-neutral-300 font-medium text-sm lg:text-base mb-6 uppercase tracking-wider">
+                      Allenati per tutta l'estate in un ambiente vero.
+                    </p>
+
+                    {/* Box Prezzi Sbarrati */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                      <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                        <span className="text-neutral-400 text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
+                          Iscrizione
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
+                            40€
+                          </span>
+                          <span className="text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                            15€
+                          </span>
                         </div>
-
-                        {/* Input Telefono */}
-                        <input
-                          type="tel"
-                          name="telefono"
-                          required
-                          placeholder="Telefono"
-                          className="flex-1 min-w-0 w-full bg-neutral-200/60 border border-neutral-300/50 rounded-full px-4 sm:px-6 py-3.5 text-sm sm:text-base outline-none focus:border-[#FF4000] transition-colors"
-                        />
+                        <span className="text-[10px] text-[#FF4000] mt-1 uppercase font-bold tracking-wider">
+                          (Niente Tessera)
+                        </span>
                       </div>
 
-                      <textarea
-                        name="informazioni"
-                        required
-                        placeholder="Di cosa hai bisogno?"
-                        rows={3}
-                        className="w-full bg-neutral-200/60 border border-neutral-300/50 rounded-[1.5rem] md:rounded-[1.8rem] px-6 py-3 md:py-5 outline-none resize-none focus:border-[#FF4000] transition-colors"
-                      />
+                      <div className="bg-black/60 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                        <span className="text-neutral-400 text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
+                          Mensile
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl lg:text-2xl text-red-500 font-bold line-through decoration-2 opacity-80">
+                            54,90€
+                          </span>
+                          <span className="text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                            35€
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                      <button
-                        type="submit"
-                        disabled={formStatus === "submitting"}
-                        className="w-full bg-[#FF4000] hover:bg-[#a30000] disabled:bg-neutral-400 text-white font-black py-2.5 md:py-[1.125rem] rounded-full text-base md:text-xl uppercase tracking-widest transition-all"
-                      >
-                        {formStatus === "submitting" ? "Invio..." : "Invia"}
-                      </button>
-                    </form>
-                  )}
+                    {/* Vantaggi */}
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-neutral-300 text-xs lg:text-sm font-medium uppercase tracking-wider bg-black/30 p-4 rounded-2xl border border-white/5">
+                      <li className="flex items-center gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                        <span>Energia ogni giorno</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                        <span>Corpo in forma</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                        <span>Mente focalizzata</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                        <span>Risultati reali</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+
+                {/* BOTTONE PER APRIRE IL POPUP */}
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-4 rounded-full text-lg md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
+                >
+                  Richiedi Informazioni
+                </button>
               </RevealOnScroll>
             </div>
           </div>
@@ -559,35 +580,68 @@ export default function Home() {
           className="w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-10 md:pb-32 border-t border-white/5 pt-15 md:pt-18 flex flex-col"
         >
           {/* SLIDER IMMAGINI (In alto) */}
-          <div className="relative w-full h-[30vh] md:h-[45vh] overflow-hidden group shrink-0">
-            {aboutSlides.map((slide, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  aboutSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
-                }`}
-              >
-                <img
-                  src={slide.src}
-                  alt={`Palestra Forge ${index + 1}`}
-                  className={`w-full h-full object-cover ${slide.position}`}
-                />
-                <div className="absolute inset-0 bg-black/10"></div>
-              </div>
-            ))}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-              {aboutSlides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setAboutSlide(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    aboutSlide === index
-                      ? "bg-white w-8"
-                      : "bg-white/60 hover:bg-white"
-                  }`}
-                  aria-label={`Vai alla slide ${index + 1}`}
-                />
+          {/* === DOPPIO SLIDER IMMAGINI (Community / Struttura) === */}
+          <div className="w-full h-[50vh] md:h-[45vh] flex flex-col md:flex-row shrink-0 border-b border-white/5">
+            {/* SINISTRA: COMMUNITY */}
+            <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden group">
+              {communitySlides.map((slide, index) => (
+                <div
+                  key={`c-${index}`}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${communitySlide === index ? "opacity-100" : "opacity-0"}`}
+                >
+                  <img
+                    src={slide.src}
+                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms] ${slide.position}`}
+                  />
+                </div>
               ))}
+
+              {/* NUOVO: Pallini navigazione Community */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+                {communitySlides.map((_, index) => (
+                  <button
+                    key={`dot-c-${index}`}
+                    onClick={() => setCommunitySlide(index)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      communitySlide === index
+                        ? "bg-white scale-125" // Pallino attivo (bianco pieno e leggermente più grande)
+                        : "bg-white/40 hover:bg-white/70" // Pallino inattivo (semi-trasparente)
+                    }`}
+                    aria-label={`Vai alla slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* DESTRA: STRUTTURA */}
+            <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden group border-t md:border-t-0 md:border-l border-black/30">
+              {facilitySlides.map((slide, index) => (
+                <div
+                  key={`f-${index}`}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${facilitySlide === index ? "opacity-100" : "opacity-0"}`}
+                >
+                  <img
+                    src={slide.src}
+                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms] ${slide.position}`}
+                  />
+                </div>
+              ))}
+
+              {/* NUOVO: Pallini navigazione Struttura */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+                {facilitySlides.map((_, index) => (
+                  <button
+                    key={`dot-f-${index}`}
+                    onClick={() => setFacilitySlide(index)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      facilitySlide === index
+                        ? "bg-[#FF4000] scale-125" // Pallino attivo (uso l'arancione che avevi prima per coerenza)
+                        : "bg-white/40 hover:bg-white/70" // Pallino inattivo
+                    }`}
+                    aria-label={`Vai alla slide ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
@@ -869,6 +923,138 @@ export default function Home() {
           src="https://cdn.iubenda.com/iubenda.js"
           strategy="lazyOnload"
         />
+
+        {/* === POPUP FORM CONTATTI (MODAL) === */}
+        <div
+          className={`fixed inset-0 z-[500] flex items-center justify-center p-4 sm:p-6 transition-all duration-500 ${
+            isModalOpen
+              ? "opacity-100 visible"
+              : "opacity-0 invisible pointer-events-none"
+          }`}
+        >
+          {/* Overlay scuro cliccabile per chiudere */}
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
+
+          {/* Contenitore Form */}
+          <div
+            className={`relative w-full max-w-xl bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl border border-white/20 transition-transform duration-500 ${
+              isModalOpen
+                ? "scale-100 translate-y-0"
+                : "scale-95 translate-y-10"
+            }`}
+          >
+            {/* Tasto Chiudi (X) */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-5 right-5 text-neutral-400 hover:text-[#FF4000] text-2xl transition-colors p-2"
+            >
+              <FaTimes />
+            </button>
+
+            {/* IL TUO FORM ORIGINALE (Leggermente adattato ai colori su sfondo bianco) */}
+            <h3 className="text-2xl md:text-3xl font-black text-center text-neutral-900 uppercase tracking-tight mb-6">
+              Inviaci una <span className="text-[#FF4000]">richiesta</span>
+            </h3>
+
+            {formStatus === "success" ? (
+              <div className="text-center py-10 space-y-4">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                  <FaCheck />
+                </div>
+                <h4 className="text-2xl font-bold text-neutral-900">
+                  Richiesta inviata!
+                </h4>
+                <p className="text-neutral-600">
+                  Ti abbiamo inviato i dettagli via email. A presto!
+                </p>
+                <button
+                  onClick={() => setFormStatus("idle")}
+                  className="mt-6 text-[#FF4000] font-bold underline"
+                >
+                  Invia un'altra richiesta
+                </button>
+              </div>
+            ) : (
+              <form
+                className="space-y-4 md:space-y-5 text-neutral-900"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setFormStatus("submitting");
+                  // logica ...
+                  setTimeout(() => setFormStatus("success"), 1000);
+                }}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    name="nome"
+                    required
+                    placeholder="Nome"
+                    className="bg-neutral-100 border border-neutral-300 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
+                  />
+                  <input
+                    type="text"
+                    name="cognome"
+                    required
+                    placeholder="Cognome"
+                    className="bg-neutral-100 border border-neutral-300 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
+                  />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Email"
+                  className="w-full bg-neutral-100 border border-neutral-300 rounded-full px-6 py-3.5 outline-none focus:border-[#FF4000] transition-colors"
+                />
+
+                <div className="flex flex-row gap-2 sm:gap-3">
+                  <div className="relative flex items-center shrink-0">
+                    <select
+                      name="prefisso"
+                      className="w-auto bg-neutral-100 border border-neutral-300 rounded-full pl-4 sm:pl-5 pr-8 sm:pr-10 py-3.5 text-sm sm:text-base text-neutral-600 outline-none focus:border-[#FF4000] transition-colors cursor-pointer appearance-none min-w-[100px]"
+                      defaultValue="+39"
+                    >
+                      <option value="+39">+39 (IT)</option>
+                      <option value="+41">+41 (CH)</option>
+                    </select>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500 text-[10px]">
+                      ▼
+                    </div>
+                  </div>
+                  <input
+                    type="tel"
+                    name="telefono"
+                    required
+                    placeholder="Telefono"
+                    className="flex-1 min-w-0 w-full bg-neutral-100 border border-neutral-300 rounded-full px-4 sm:px-6 py-3.5 text-sm sm:text-base outline-none focus:border-[#FF4000] transition-colors"
+                  />
+                </div>
+
+                <textarea
+                  name="informazioni"
+                  required
+                  placeholder="Di cosa hai bisogno?"
+                  rows={3}
+                  className="w-full bg-neutral-100 border border-neutral-300 rounded-[1.5rem] px-6 py-4 outline-none resize-none focus:border-[#FF4000] transition-colors"
+                />
+
+                <button
+                  type="submit"
+                  disabled={formStatus === "submitting"}
+                  className="w-full bg-[#FF4000] hover:bg-[#a30000] disabled:bg-neutral-400 text-white font-black py-[1.125rem] rounded-full text-lg md:text-xl uppercase tracking-widest transition-all mt-2"
+                >
+                  {formStatus === "submitting"
+                    ? "Invio in corso..."
+                    : "Invia Richiesta"}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
 
         <Analytics debug={true} mode={"development"} />
         <SpeedInsights />
