@@ -997,8 +997,39 @@ export default function Home() {
                 onSubmit={async (e) => {
                   e.preventDefault();
                   setFormStatus("submitting");
-                  // logica ...
-                  setTimeout(() => setFormStatus("success"), 1000);
+
+                  // 1. Estraiamo i dati dai campi di input del form
+                  const formData = new FormData(e.currentTarget);
+                  const data = {
+                    nome: formData.get("nome"),
+                    cognome: formData.get("cognome"),
+                    email: formData.get("email"),
+                    prefisso: formData.get("prefisso"),
+                    telefono: formData.get("telefono"),
+                    informazioni: formData.get("informazioni"),
+                  };
+
+                  try {
+                    // 2. Inviamo i dati alla nostra API Route in JSON
+                    const response = await fetch("/api/send", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(data),
+                    });
+
+                    // 3. Gestiamo la risposta
+                    if (response.ok) {
+                      setFormStatus("success");
+                    } else {
+                      console.error("Errore dal server");
+                      setFormStatus("error");
+                    }
+                  } catch (error) {
+                    console.error("Errore di rete:", error);
+                    setFormStatus("error");
+                  }
                 }}
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
