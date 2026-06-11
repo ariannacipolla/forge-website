@@ -166,7 +166,7 @@ export default function Home() {
   }, []);
 
   const INSTAGRAM_URL = "https://www.instagram.com/__.forge.__";
-  const MAPS_URL = "https://maps.app.goo.gl/24nCLzWAkCVnYkeA8";
+  const MAPS_URL = "https://maps.app.goo.gl/Mt5fadnJ5ZYBtykM8";
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
