@@ -491,7 +491,7 @@ export default function Home() {
             {/* COLONNA DESTRA: PROMO SETTEMBRE E BOTTONE INFO */}
             <div
               id="promo-settembre"
-              className="relative flex-1 flex flex-col items-center justify-center bg-neutral-900 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
+              className="relative flex-1 flex flex-col items-center justify-center bg-neutral-950 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
             >
               <RevealOnScroll
                 delay={200}
