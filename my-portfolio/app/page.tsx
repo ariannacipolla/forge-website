@@ -136,7 +136,6 @@ export default function Home() {
   // si e' fermati vicino all'inizio di una sezione, scivoliamo fino al bordo.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!lenis) return;
     if (!window.matchMedia("(max-width: 767px)").matches) return;
 
     const SETTLE_DELAY = 160; // ms di quiete prima di considerare finito lo scroll
@@ -148,12 +147,41 @@ export default function Home() {
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let frame: number | null = null;
     let isTouching = false;
     let ignoreUntil = 0; // finestra in cui lo scroll e' nostro, non dell'utente
 
     const clearTimer = () => {
       if (timer) clearTimeout(timer);
       timer = null;
+    };
+
+    const cancelAnimation = () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      ignoreUntil = 0;
+    };
+
+    // Animiamo noi i frame invece di usare scrollTo({ behavior: "smooth" }):
+    // il nativo parte di scatto e non lascia scegliere durata ed easing.
+    const glideTo = (to: number, duration: number) => {
+      const from = window.scrollY;
+      const start = performance.now();
+
+      const step = (now: number) => {
+        const t = Math.min((now - start) / (duration * 1000), 1);
+        window.scrollTo(0, from + (to - from) * easeInOutCubic(t));
+        if (t < 1) {
+          frame = requestAnimationFrame(step);
+        } else {
+          frame = null;
+          ignoreUntil = Date.now() + 120;
+        }
+      };
+
+      cancelAnimation();
+      ignoreUntil = Date.now() + duration * 1000 + 250;
+      frame = requestAnimationFrame(step);
     };
 
     const settle = () => {
@@ -177,8 +205,7 @@ export default function Home() {
       const distance = Math.abs(nearest - current);
       const duration = 0.6 + (distance / (viewport * THRESHOLD)) * 0.7;
 
-      ignoreUntil = Date.now() + duration * 1000 + 250;
-      lenis.scrollTo(nearest, { duration, easing: easeInOutCubic });
+      glideTo(nearest, duration);
     };
 
     const onScroll = () => {
@@ -192,8 +219,7 @@ export default function Home() {
       isTouching = true;
       ignoreUntil = 0;
       clearTimer();
-      // Taglia l'animazione in corso: il gesto dell'utente ha la precedenza.
-      lenis.scrollTo(window.scrollY, { immediate: true });
+      cancelAnimation(); // il gesto dell'utente ha sempre la precedenza
     };
     const onTouchEnd = () => {
       isTouching = false;
@@ -206,12 +232,13 @@ export default function Home() {
 
     return () => {
       clearTimer();
+      cancelAnimation();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [lenis]);
+  }, []);
 
   useEffect(() => {
     // Usiamo un Set per tracciare ogni sezione una sola volta per visita
