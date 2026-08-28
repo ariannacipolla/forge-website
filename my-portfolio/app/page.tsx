@@ -338,7 +338,7 @@ export default function Home() {
         {/* === SEZIONE 1: HERO === */}
         <section
           id="home"
-          className="relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
+          className="snap-section relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
           <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
             {/* BADGE PROMO SETTEMBRE CON BORDO SFUMATO */}
@@ -364,7 +364,7 @@ export default function Home() {
         {/* === SEZIONE 2: pacchetti === */}
         <section
           id="pacchetti"
-          className="w-full h-auto min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] flex flex-col bg-neutral-950 relative overflow-hidden"
+          className="snap-section w-full h-auto min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] flex flex-col bg-neutral-950 relative overflow-hidden"
         >
           <div className="absolute inset-0 from-gray-900/40 via-neutral-950 to-neutral-950 z-0 pointer-events-none"></div>
           <div
@@ -491,7 +491,7 @@ export default function Home() {
             {/* COLONNA DESTRA: PROMO SETTEMBRE E BOTTONE INFO */}
             <div
               id="promo-settembre"
-              className="relative flex-1 flex flex-col items-center justify-center bg-neutral-950 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
+              className="snap-section relative flex-1 flex flex-col items-center justify-center bg-neutral-950 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
             >
               <RevealOnScroll
                 delay={200}
@@ -579,7 +579,7 @@ export default function Home() {
         {/* === SEZIONE 3: CHI SIAMO === */}
         <section
           id="about-section"
-          className="w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-10 md:pb-32 border-t border-white/5 pt-15 md:pt-18 flex flex-col"
+          className="snap-section w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-10 md:pb-32 border-t border-white/5 pt-15 md:pt-18 flex flex-col"
         >
           {/* SLIDER IMMAGINI (In alto) */}
           {/* === DOPPIO SLIDER IMMAGINI (Community / Struttura) === */}
@@ -708,7 +708,7 @@ export default function Home() {
         {/* === SEZIONE 4: CONTATTI E FOOTER === */}
         <section
           id="footer-contatti"
-          className="w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"
+          className="snap-section w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"
         >
           {/* === CONTATTI === */}
           <div className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-24 flex flex-col md:flex-row gap-8 lg:gap-16 items-center md:items-stretch">
