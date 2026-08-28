@@ -505,12 +505,12 @@ export default function Home() {
 
                   <div className="w-full relative z-10">
                     <div className="flex flex-col gap-2 md:gap-3 mb-3 md:mb-4">
-                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white uppercase tracking-tight drop-shadow-md whitespace-nowrap self-start">
-                        Inizia a <span className="text-[#FF4000]">Settembre</span>
-                      </h3>
                       <span className="text-[9px] md:text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap self-end shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
                         Solo Nuovi Iscritti
                       </span>
+                      <h3 className="text-[7.5vw] sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md whitespace-nowrap self-start">
+                        Inizia a <span className="text-[#FF4000]">Settembre</span>
+                      </h3>
                     </div>
 
                     <p className="text-neutral-300 font-medium text-xs md:text-sm lg:text-base mb-4 md:mb-6 uppercase tracking-wider">
