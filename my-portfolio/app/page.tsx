@@ -504,11 +504,11 @@ export default function Home() {
                   <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#FF4000]/20 blur-3xl rounded-full pointer-events-none" />
 
                   <div className="w-full relative z-10">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 md:gap-3 mb-3 md:mb-4">
-                      <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md">
-                        Promo <span className="text-[#FF4000]">Settembre</span>
+                    <div className="flex flex-col gap-2 md:gap-3 mb-3 md:mb-4">
+                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white uppercase tracking-tight drop-shadow-md whitespace-nowrap self-start">
+                        Inizia a <span className="text-[#FF4000]">Settembre</span>
                       </h3>
-                      <span className="text-[9px] md:text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full uppercase tracking-widest self-start sm:self-center shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
+                      <span className="text-[9px] md:text-[10px] lg:text-xs font-bold bg-[#FF4000] text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap self-end shadow-[0_0_15px_rgba(255,64,0,0.5)] animate-pulse">
                         Solo Nuovi Iscritti
                       </span>
                     </div>
