@@ -136,10 +136,16 @@ export default function Home() {
   // si e' fermati vicino all'inizio di una sezione, scivoliamo fino al bordo.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!lenis) return;
     if (!window.matchMedia("(max-width: 767px)").matches) return;
 
     const SETTLE_DELAY = 160; // ms di quiete prima di considerare finito lo scroll
     const THRESHOLD = 0.3; // aggancia solo entro il 30% dell'altezza schermo
+
+    // Ease-in-out: la pagina e' ferma quando parte l'aggancio, quindi si avvia
+    // in punta di piedi invece di scattare come lo smooth nativo del browser.
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     let timer: ReturnType<typeof setTimeout> | null = null;
     let isTouching = false;
@@ -165,8 +171,14 @@ export default function Home() {
       });
 
       if (nearest === null) return;
-      ignoreUntil = Date.now() + 900;
-      window.scrollTo({ top: nearest, behavior: "smooth" });
+
+      // Piu' e' lontano il bordo, piu' lunga l'animazione: gli aggiustamenti
+      // piccoli restano rapidi, quelli lunghi non sembrano uno strappo.
+      const distance = Math.abs(nearest - current);
+      const duration = 0.6 + (distance / (viewport * THRESHOLD)) * 0.7;
+
+      ignoreUntil = Date.now() + duration * 1000 + 250;
+      lenis.scrollTo(nearest, { duration, easing: easeInOutCubic });
     };
 
     const onScroll = () => {
@@ -180,6 +192,8 @@ export default function Home() {
       isTouching = true;
       ignoreUntil = 0;
       clearTimer();
+      // Taglia l'animazione in corso: il gesto dell'utente ha la precedenza.
+      lenis.scrollTo(window.scrollY, { immediate: true });
     };
     const onTouchEnd = () => {
       isTouching = false;
@@ -197,7 +211,7 @@ export default function Home() {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, []);
+  }, [lenis]);
 
   useEffect(() => {
     // Usiamo un Set per tracciare ogni sezione una sola volta per visita
