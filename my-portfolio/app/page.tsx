@@ -19,6 +19,10 @@ import {
   FaCalendarDay,
   FaCalendarWeek,
   FaCalendarAlt,
+  FaHome,
+  FaImages,
+  FaInfoCircle,
+  FaTags,
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
@@ -73,6 +77,8 @@ function RevealOnScroll({
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Accordion "Pacchetti" nel menu mobile: le sotto-voci si aprono solo al tap
+  const [isPacchettiOpen, setIsPacchettiOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [formStatus, setFormStatus] = useState<
     "idle" | "submitting" | "success" | "error"
@@ -80,6 +86,11 @@ export default function Home() {
 
   // Stato per il popup del form
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Richiudi l'accordion "Pacchetti" ogni volta che il menu mobile si chiude
+  useEffect(() => {
+    if (!isMenuOpen) setIsPacchettiOpen(false);
+  }, [isMenuOpen]);
 
   // Blocca lo scorrimento della pagina quando il popup è aperto
   useEffect(() => {
@@ -154,13 +165,15 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScrollBg);
   }, []);
 
-  // AGGANCIO DOLCE ALLE SEZIONI (solo mobile).
+  // AGGANCIO DOLCE ALLE SEZIONI (mobile e desktop).
   // Lo scroll-snap CSS spezzava l'inerzia del dito, quindi qui non tocchiamo
   // mai il gesto in corso: aspettiamo che lo scroll si fermi da solo e, se ci
   // si e' fermati vicino all'inizio di una sezione, scivoliamo fino al bordo.
+  // Su desktop lo scroll con la rotella e' gestito da Lenis (smoothWheel): lo
+  // mettiamo in pausa durante il nostro aggancio per evitare che le due
+  // animazioni si contendano lo scroll nello stesso momento.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!window.matchMedia("(max-width: 767px)").matches) return;
 
     const SETTLE_DELAY = 160; // ms di quiete prima di considerare finito lo scroll
     const THRESHOLD = 0.3; // aggancia solo entro il 30% dell'altezza schermo
@@ -174,6 +187,7 @@ export default function Home() {
     let frame: number | null = null;
     let isTouching = false;
     let ignoreUntil = 0; // finestra in cui lo scroll e' nostro, non dell'utente
+    let lenisStopped = false;
 
     const clearTimer = () => {
       if (timer) clearTimeout(timer);
@@ -184,13 +198,23 @@ export default function Home() {
       if (frame !== null) cancelAnimationFrame(frame);
       frame = null;
       ignoreUntil = 0;
+      if (lenisStopped) {
+        lenis?.start();
+        lenisStopped = false;
+      }
     };
 
     // Animiamo noi i frame invece di usare scrollTo({ behavior: "smooth" }):
     // il nativo parte di scatto e non lascia scegliere durata ed easing.
     const glideTo = (to: number, duration: number) => {
+      cancelAnimation(); // ferma un aggancio precedente e riavvia Lenis, se serve
+
       const from = window.scrollY;
       const start = performance.now();
+
+      lenis?.stop();
+      lenisStopped = true;
+      ignoreUntil = Date.now() + duration * 1000 + 250;
 
       const step = (now: number) => {
         const t = Math.min((now - start) / (duration * 1000), 1);
@@ -200,11 +224,11 @@ export default function Home() {
         } else {
           frame = null;
           ignoreUntil = Date.now() + 120;
+          lenis?.start();
+          lenisStopped = false;
         }
       };
 
-      cancelAnimation();
-      ignoreUntil = Date.now() + duration * 1000 + 250;
       frame = requestAnimationFrame(step);
     };
 
@@ -262,7 +286,7 @@ export default function Home() {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, []);
+  }, [lenis]);
 
   useEffect(() => {
     // Usiamo un Set per tracciare ogni sezione una sola volta per visita
@@ -490,87 +514,180 @@ export default function Home() {
               : "opacity-0 invisible pointer-events-none"
           }`}
         >
-          <nav className="h-full w-full flex flex-col items-center justify-center px-10 overflow-y-auto py-10">
-            <ul className="flex flex-col gap-8 w-full">
+          <nav className="h-full w-full flex flex-col px-6 pt-24 pb-10 overflow-y-auto">
+            <ul className="flex flex-col gap-4 w-full">
               {[
-                { id: "home", label: "Home" },
-                { id: "galleria-section", label: "Galleria" },
-                { id: "about-section", label: "Chi siamo" },
-              ].map((item) => (
-                <li key={item.id} className="w-full text-center">
-                  <a
-                    href={`#${item.id}`}
-                    onClick={handleScroll}
-                    className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
-                      activeSection === item.id ? "text-[#FF4000]" : "text-white"
-                    }`}
+                { id: "home", label: "Home", icon: FaHome },
+                { id: "galleria-section", label: "Galleria", icon: FaImages },
+                { id: "about-section", label: "Chi siamo", icon: FaInfoCircle },
+              ].map((item, index) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <li
+                    key={item.id}
+                    className="transition-all duration-500 ease-out"
+                    style={{
+                      transitionDelay: isMenuOpen ? `${index * 60 + 100}ms` : "0ms",
+                      opacity: isMenuOpen ? 1 : 0,
+                      transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+                    }}
                   >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-
-              {/* PACCHETTI + sotto-voci (sempre visibili, niente accordion) */}
-              <li className="w-full text-center space-y-4">
-                <a
-                  href="#abbonamenti"
-                  onClick={handleScroll}
-                  className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
-                    pacchettiSubIds.includes(activeSection)
-                      ? "text-[#FF4000]"
-                      : "text-white"
-                  }`}
-                >
-                  Pacchetti
-                </a>
-                <ul className="flex flex-col gap-3">
-                  {pacchettiSubItems.map((sub) => (
-                    <li key={sub.id}>
-                      <a
-                        href={`#${sub.id}`}
-                        onClick={handleScroll}
-                        className={`block text-base uppercase font-bold tracking-widest transition-colors ${
-                          activeSection === sub.id
-                            ? "text-[#FF4000]"
-                            : "text-neutral-400"
+                    <a
+                      href={`#${item.id}`}
+                      onClick={handleScroll}
+                      className={`flex items-center gap-4 w-full p-4 rounded-[1.5rem] border transition-colors ${
+                        isActive
+                          ? "bg-[#FF4000]/10 border-[#FF4000]"
+                          : "bg-neutral-900/40 border-white/5 active:border-white/20"
+                      }`}
+                    >
+                      <span
+                        className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg transition-colors ${
+                          isActive
+                            ? "bg-[#FF4000] text-white"
+                            : "bg-white/5 text-[#FF4000]"
                         }`}
                       >
-                        {sub.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                        <item.icon />
+                      </span>
+                      <span
+                        className={`text-xl font-black uppercase tracking-tight transition-colors ${
+                          isActive ? "text-[#FF4000]" : "text-white"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+
+              {/* PACCHETTI: card-accordion, le sotto-voci si aprono solo al tap */}
+              <li
+                className="transition-all duration-500 ease-out"
+                style={{
+                  transitionDelay: isMenuOpen ? "280ms" : "0ms",
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
+                <div
+                  className={`w-full rounded-[1.5rem] border overflow-hidden transition-colors ${
+                    pacchettiSubIds.includes(activeSection)
+                      ? "bg-[#FF4000]/10 border-[#FF4000]"
+                      : "bg-neutral-900/40 border-white/5"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setIsPacchettiOpen((prev) => !prev)}
+                    aria-expanded={isPacchettiOpen}
+                    className="flex items-center gap-4 w-full p-4"
+                  >
+                    <span
+                      className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg transition-colors ${
+                        pacchettiSubIds.includes(activeSection)
+                          ? "bg-[#FF4000] text-white"
+                          : "bg-white/5 text-[#FF4000]"
+                      }`}
+                    >
+                      <FaTags />
+                    </span>
+                    <span
+                      className={`flex-1 text-left text-xl font-black uppercase tracking-tight transition-colors ${
+                        pacchettiSubIds.includes(activeSection)
+                          ? "text-[#FF4000]"
+                          : "text-white"
+                      }`}
+                    >
+                      Pacchetti
+                    </span>
+                    <FaChevronDown
+                      className={`text-base text-neutral-400 shrink-0 transition-transform duration-300 ${isPacchettiOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  <ul
+                    className={`flex flex-col overflow-hidden transition-all duration-300 ${
+                      isPacchettiOpen ? "max-h-52 opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    {pacchettiSubItems.map((sub) => (
+                      <li key={sub.id} className="border-t border-white/5">
+                        <a
+                          href={`#${sub.id}`}
+                          onClick={handleScroll}
+                          className={`block py-3 pl-20 pr-4 text-sm uppercase font-bold tracking-widest transition-colors ${
+                            activeSection === sub.id
+                              ? "text-[#FF4000]"
+                              : "text-neutral-400"
+                          }`}
+                        >
+                          {sub.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
 
-              <li className="w-full text-center">
+              <li
+                className="transition-all duration-500 ease-out"
+                style={{
+                  transitionDelay: isMenuOpen ? "340ms" : "0ms",
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
                 <a
                   href="#footer-contatti"
                   onClick={handleScroll}
-                  className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
+                  className={`flex items-center gap-4 w-full p-4 rounded-[1.5rem] border transition-colors ${
                     activeSection === "footer-contatti"
-                      ? "text-[#FF4000]"
-                      : "text-white"
+                      ? "bg-[#FF4000]/10 border-[#FF4000]"
+                      : "bg-neutral-900/40 border-white/5 active:border-white/20"
                   }`}
                 >
-                  Contatti
+                  <span
+                    className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg transition-colors ${
+                      activeSection === "footer-contatti"
+                        ? "bg-[#FF4000] text-white"
+                        : "bg-white/5 text-[#FF4000]"
+                    }`}
+                  >
+                    <FaEnvelope />
+                  </span>
+                  <span
+                    className={`text-xl font-black uppercase tracking-tight transition-colors ${
+                      activeSection === "footer-contatti"
+                        ? "text-[#FF4000]"
+                        : "text-white"
+                    }`}
+                  >
+                    Contatti
+                  </span>
                 </a>
               </li>
             </ul>
 
-            <div className="w-12 h-[2px] bg-[#FF4000] my-10 shrink-0"></div>
-
-            <div className="flex justify-center gap-10 shrink-0">
+            <div
+              className="mt-auto pt-10 flex justify-center gap-10 shrink-0 transition-all duration-500 ease-out"
+              style={{
+                transitionDelay: isMenuOpen ? "400ms" : "0ms",
+                opacity: isMenuOpen ? 1 : 0,
+                transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+              }}
+            >
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
-                className="text-white text-4xl hover:text-[#FF4000]"
+                className="text-white text-3xl hover:text-[#FF4000]"
               >
                 <FaInstagram />
               </a>
               <a
                 href={MAPS_URL}
                 target="_blank"
-                className="text-white text-4xl hover:text-[#FF4000]"
+                className="text-white text-3xl hover:text-[#FF4000]"
               >
                 <FaMapMarkerAlt />
               </a>
@@ -643,7 +760,7 @@ export default function Home() {
 
             <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12 lg:p-16 z-10">
               <FaDumbbell className="text-[#FF4000] text-2xl md:text-3xl lg:text-4xl mb-3 drop-shadow-lg" />
-              <h3 className="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
+              <h3 className="font-black text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
                 Forge
               </h3>
             </div>
@@ -697,7 +814,7 @@ export default function Home() {
 
             <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12 lg:p-16 z-10">
               <FaSpa className="text-[#FF4000] text-2xl md:text-3xl lg:text-4xl mb-3 drop-shadow-lg" />
-              <h3 className="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
+              <h3 className="font-black text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
                 Area Benessere
               </h3>
             </div>
@@ -707,10 +824,10 @@ export default function Home() {
         {/* === SEZIONE 3: CHI SIAMO === */}
         <section
           id="about-section"
-          className="snap-section w-full h-[100dvh] max-h-[100dvh] bg-neutral-950 relative border-t border-white/5 pt-16 md:pt-20 pb-4 md:pb-8 flex flex-col overflow-hidden"
+          className="snap-section w-full min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] bg-neutral-950 relative border-t border-white/5 pt-16 md:pt-20 pb-4 md:pb-8 flex flex-col md:overflow-hidden"
         >
           {/* FOTO COMMUNITY (singola, banda edge-to-edge per massimizzare lo spazio verticale) */}
-          <div className="w-full h-[36vh] sm:h-[40vh] md:h-[52vh] shrink-0 relative overflow-hidden group border-b border-white/5">
+          <div className="w-full h-[26vh] sm:h-[34vh] md:h-[52vh] shrink-0 relative overflow-hidden group border-b border-white/5">
             <img
               src="/FORGE-1.jpg"
               alt="Community FORGE durante un allenamento di gruppo"
@@ -921,26 +1038,16 @@ export default function Home() {
                 </button>
               </div>
             </RevealOnScroll>
-
-            {/* INDICATORE SCROLL MOBILE CON FADE-IN */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20 pointer-events-none animate-fade-in-arrow">
-              <div className="flex flex-col items-center gap-1 animate-bounce">
-                <span className="text-[10px] text-white/80 uppercase tracking-[0.3em] font-bold drop-shadow-md">
-                  Prova Gratuita
-                </span>
-                <FaChevronDown className="text-white/80 drop-shadow-md" />
-              </div>
-            </div>
           </div>
         </section>
 
         {/* === SEZIONE 5: PACCHETTI > PROVA GRATUITA === */}
         <section
           id="prova-gratuita"
-          className="snap-section w-full min-h-[100dvh] flex flex-col md:flex-row bg-neutral-950 relative border-t border-white/5"
+          className="snap-section w-full min-h-[100dvh] flex flex-col md:flex-row justify-center bg-neutral-950 relative border-t border-white/5"
         >
-          {/* COLONNA SINISTRA: VIDEO */}
-          <div className="relative w-full md:w-1/2 h-[45vh] md:h-auto overflow-hidden">
+          {/* COLONNA SINISTRA: VIDEO (nascosto su mobile) */}
+          <div className="hidden md:block relative w-full md:w-1/2 h-[45vh] md:h-auto overflow-hidden">
             <video
               autoPlay
               loop
@@ -954,7 +1061,7 @@ export default function Home() {
           </div>
 
           {/* COLONNA DESTRA: DESCRIZIONE + CTA */}
-          <div className="relative w-full md:w-1/2 flex flex-col justify-center px-6 py-14 md:px-16 lg:px-20 md:py-12">
+          <div className="relative w-full md:w-1/2 flex flex-col justify-center px-6 pt-20 pb-14 md:px-16 lg:px-20 md:py-12">
             <RevealOnScroll className="max-w-2xl">
               <div className="flex items-center gap-3 mb-5">
                 <span className="w-8 h-[2px] bg-[#FF4000] shadow-[0_0_8px_#FF4000]"></span>
