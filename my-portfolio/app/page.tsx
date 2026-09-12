@@ -907,13 +907,21 @@ export default function Home() {
 
           <div className="relative z-10 w-full flex-1 flex flex-col justify-center max-w-6xl mx-auto px-6 py-10 md:px-12 lg:px-0 pt-20 md:pt-18">
             <RevealOnScroll className="space-y-8 lg:space-y-10 pb-16 md:pb-0">
-              <div className="space-y-1 text-center md:text-left">
+              <div className="space-y-3 md:space-y-1 text-center md:text-left">
                 <h2 className="font-black text-3xl lg:text-7xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
                   ABBONAMENTI
                 </h2>
-                <p className="font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
+                <p className="hidden md:block font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
                   scegli la durata più adatta al tuo percorso
                 </p>
+                <div className="md:hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#FF4000] shadow-[0_0_20px_rgba(255,64,0,0.4)]">
+                  <FaCheck className="text-white text-xs shrink-0" />
+                  <span className="text-white font-bold uppercase tracking-wide text-[10px] leading-snug text-center">
+                    Scheda di allenamento inclusa
+                    <br />
+                    in tutti gli abbonamenti
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
@@ -1029,13 +1037,21 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex justify-center md:justify-start pt-2">
+              <div className="flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between gap-4 pt-2">
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-3 px-8 md:py-4 md:px-10 rounded-full text-base md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
                 >
                   Richiedi Info
                 </button>
+
+                {/* BADGE: stesso livello del bottone, sulla destra (solo desktop: su mobile è già in alto sotto il titolo) */}
+                <div className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FF4000] shadow-[0_0_20px_rgba(255,64,0,0.4)] max-w-full">
+                  <FaCheck className="text-white text-xs shrink-0" />
+                  <span className="text-white font-bold uppercase tracking-wide text-[10px] md:text-xs leading-snug md:whitespace-nowrap md:overflow-hidden md:text-ellipsis">
+                    Scheda di allenamento inclusa in tutti gli abbonamenti
+                  </span>
+                </div>
               </div>
             </RevealOnScroll>
           </div>
