@@ -10,6 +10,15 @@ import {
   FaTimes,
   FaCheck,
   FaPhoneAlt,
+  FaDumbbell,
+  FaSpa,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCalendarCheck,
+  FaArrowRight,
+  FaCalendarDay,
+  FaCalendarWeek,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
@@ -88,39 +97,54 @@ export default function Home() {
 
   const [mapCookiesAccepted, setMapCookiesAccepted] = useState(false);
 
-  const [communitySlide, setCommunitySlide] = useState(0);
-  const [facilitySlide, setFacilitySlide] = useState(0);
+  const [gymSlide, setGymSlide] = useState(0);
+  const [spaSlide, setSpaSlide] = useState(0);
 
-  const communitySlides = [
-    { src: "/FORGE-1.jpg", position: "object-[50%_40%]" },
-    { src: "/FORGE-2.jpeg", position: "object-[50%_25%]" },
-    { src: "/FORGE-3.jpeg", position: "object-[50%_15%]" },
+  // "position" regola l'inquadratura di ogni singola foto dentro lo slider:
+  // e' la classe object-position di Tailwind (object-[X%_Y%]). X = sinistra/
+  // destra (0%=bordo sx, 100%=bordo dx), Y = alto/basso (0%=in alto, 100%=in
+  // basso). Cambia i numeri foto per foto per sistemare l'inquadratura.
+  const gymSlides = [
+    { src: "/foto_palestra/IMG_5535.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5536.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5537.JPG", position: "object-[50%_20%]" },
+    { src: "/foto_palestra/IMG_5538.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5539.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5540.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5541.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5542.JPG", position: "object-[50%_40%]" },
+    { src: "/foto_palestra/IMG_5543.JPG", position: "object-[50%_40%]" },
+    { src: "/foto_palestra/IMG_5544.JPG", position: "object-[50%_40%]" },
+    { src: "/foto_palestra/IMG_5545.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5546.JPG", position: "object-[50%_60%]" },
+    { src: "/foto_palestra/IMG_5547.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5548.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5549.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5550.JPG", position: "object-[50%_50%]" },
+    { src: "/foto_palestra/IMG_5551.JPG", position: "object-[50%_30%]" },
+    { src: "/foto_palestra/IMG_5552.JPG", position: "object-[50%_50%]" },
   ];
 
-  const facilitySlides = [
-    { src: "/FORGE-4.jpeg", position: "object-center" },
-    { src: "/FORGE-5.jpeg", position: "object-[50%_58%]" },
-    { src: "/FORGE-6.jpeg" },
+  const spaSlides = [
+    { src: "/foto_spa/IMG_5415.jpg", position: "object-[50%_50%]" },
+    { src: "/foto_spa/IMG_5416.PNG", position: "object-[50%_50%]" },
+    { src: "/foto_spa/IMG_5417.PNG", position: "object-[50%_50%]" },
+    { src: "/foto_spa/IMG_5426.jpg", position: "object-[50%_100%]" },
+    { src: "/foto_spa/IMG_5433.jpg", position: "object-[50%_50%]" },
+    { src: "/foto_spa/IMG_5434.jpg", position: "object-[100%_40%]" },
+    { src: "/foto_spa/IMG_5437.jpg", position: "object-[50%_50%]" },
   ];
+
+  const nextGymSlide = () =>
+    setGymSlide((prev) => (prev === gymSlides.length - 1 ? 0 : prev + 1));
+  const prevGymSlide = () =>
+    setGymSlide((prev) => (prev === 0 ? gymSlides.length - 1 : prev - 1));
+  const nextSpaSlide = () =>
+    setSpaSlide((prev) => (prev === spaSlides.length - 1 ? 0 : prev + 1));
+  const prevSpaSlide = () =>
+    setSpaSlide((prev) => (prev === 0 ? spaSlides.length - 1 : prev - 1));
 
   const lenis = useLenis();
-
-  useEffect(() => {
-    const commTimer = setInterval(() => {
-      setCommunitySlide((prev) =>
-        prev === communitySlides.length - 1 ? 0 : prev + 1,
-      );
-    }, 5000);
-    const facTimer = setInterval(() => {
-      setFacilitySlide((prev) =>
-        prev === facilitySlides.length - 1 ? 0 : prev + 1,
-      );
-    }, 5500);
-    return () => {
-      clearInterval(commTimer);
-      clearInterval(facTimer);
-    };
-  }, [communitySlides.length, facilitySlides.length]);
 
   useEffect(() => {
     const handleScrollBg = () => {
@@ -275,19 +299,41 @@ export default function Home() {
     }
   }, []);
 
+  // Autoplay crossfade per lo slider Palestra / Area Benessere
+  useEffect(() => {
+    if (gymSlides.length < 2) return;
+    const timer = setInterval(() => {
+      setGymSlide((prev) => (prev === gymSlides.length - 1 ? 0 : prev + 1));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [gymSlides.length]);
+
+  useEffect(() => {
+    if (spaSlides.length < 2) return;
+    const timer = setInterval(() => {
+      setSpaSlide((prev) => (prev === spaSlides.length - 1 ? 0 : prev + 1));
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [spaSlides.length]);
+
   const INSTAGRAM_URL = "https://www.instagram.com/__.forge.__";
   const MAPS_URL = "https://maps.app.goo.gl/Mt5fadnJ5ZYBtykM8";
+
+  // Sotto-sezioni di "Pacchetti": voci del menu a cascata, riutilizzate anche
+  // nel menu mobile. Ognuna corrisponde a una <section id="..."> piu' sotto.
+  const pacchettiSubItems = [
+    { id: "abbonamenti", label: "Abbonamenti" },
+    { id: "prova-gratuita", label: "Prova Gratuita" },
+    { id: "promo-settembre", label: "Promo Settembre" },
+  ];
+  const pacchettiSubIds = pacchettiSubItems.map((item) => item.id);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const href = e.currentTarget.getAttribute("href");
     if (!href) return;
 
-    let targetId = href.substring(1);
-    if (targetId === "promo-settembre" && window.innerWidth >= 768) {
-      targetId = "pacchetti";
-    }
-
+    const targetId = href.substring(1);
     const targetElement = document.getElementById(targetId);
 
     if (!targetElement) return;
@@ -346,23 +392,66 @@ export default function Home() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2">
             <ul className="flex gap-8 text-sm uppercase tracking-[0.2em] font-medium text-gray-200">
-              {["home", "pacchetti", "about-section", "footer-contatti"].map(
-                (id) => (
-                  <li key={id}>
-                    <a
-                      href={`#${id}`}
-                      onClick={handleScroll}
-                      className={`transition-colors ${activeSection === id ? "text-[#FF4000]" : "hover:text-[#FF4000]"}`}
-                    >
-                      {id === "about-section"
-                        ? "Chi siamo"
-                        : id === "footer-contatti"
-                          ? "Contatti"
-                          : id}
-                    </a>
-                  </li>
-                ),
-              )}
+              {[
+                { id: "home", label: "Home" },
+                { id: "galleria-section", label: "Galleria" },
+                { id: "about-section", label: "Chi siamo" },
+              ].map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={handleScroll}
+                    className={`transition-colors ${activeSection === item.id ? "text-[#FF4000]" : "hover:text-[#FF4000]"}`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+
+              {/* PACCHETTI: menu a cascata (hover su desktop) */}
+              <li className="relative group">
+                <a
+                  href="#abbonamenti"
+                  onClick={handleScroll}
+                  className={`flex items-center gap-1 transition-colors ${
+                    pacchettiSubIds.includes(activeSection)
+                      ? "text-[#FF4000]"
+                      : "hover:text-[#FF4000]"
+                  }`}
+                >
+                  Pacchetti
+                  <FaChevronDown className="text-[9px] transition-transform duration-200 group-hover:rotate-180" />
+                </a>
+
+                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible -translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-200 z-20">
+                  <div className="min-w-[190px] bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl flex flex-col gap-1">
+                    {pacchettiSubItems.map((sub) => (
+                      <a
+                        key={sub.id}
+                        href={`#${sub.id}`}
+                        onClick={handleScroll}
+                        className={`block px-4 py-2.5 rounded-xl text-xs tracking-widest normal-case font-medium transition-colors ${
+                          activeSection === sub.id
+                            ? "text-[#FF4000] bg-white/5"
+                            : "text-gray-200 hover:text-[#FF4000] hover:bg-white/5"
+                        }`}
+                      >
+                        {sub.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <a
+                  href="#footer-contatti"
+                  onClick={handleScroll}
+                  className={`transition-colors ${activeSection === "footer-contatti" ? "text-[#FF4000]" : "hover:text-[#FF4000]"}`}
+                >
+                  Contatti
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -401,27 +490,71 @@ export default function Home() {
               : "opacity-0 invisible pointer-events-none"
           }`}
         >
-          <nav className="h-full w-full flex flex-col items-center justify-center px-10">
+          <nav className="h-full w-full flex flex-col items-center justify-center px-10 overflow-y-auto py-10">
             <ul className="flex flex-col gap-8 w-full">
-              {["home", "pacchetti", "about-section", "footer-contatti"].map(
-                (id) => (
-                  <li key={id} className="w-full text-center">
-                    <a
-                      href={`#${id}`}
-                      onClick={handleScroll}
-                      className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
-                        activeSection === id ? "text-[#FF4000]" : "text-white"
-                      }`}
-                    >
-                      {id === "about-section"
-                        ? "Chi siamo"
-                        : id === "footer-contatti"
-                          ? "Contatti"
-                          : id}
-                    </a>
-                  </li>
-                ),
-              )}
+              {[
+                { id: "home", label: "Home" },
+                { id: "galleria-section", label: "Galleria" },
+                { id: "about-section", label: "Chi siamo" },
+              ].map((item) => (
+                <li key={item.id} className="w-full text-center">
+                  <a
+                    href={`#${item.id}`}
+                    onClick={handleScroll}
+                    className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
+                      activeSection === item.id ? "text-[#FF4000]" : "text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+
+              {/* PACCHETTI + sotto-voci (sempre visibili, niente accordion) */}
+              <li className="w-full text-center space-y-4">
+                <a
+                  href="#abbonamenti"
+                  onClick={handleScroll}
+                  className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
+                    pacchettiSubIds.includes(activeSection)
+                      ? "text-[#FF4000]"
+                      : "text-white"
+                  }`}
+                >
+                  Pacchetti
+                </a>
+                <ul className="flex flex-col gap-3">
+                  {pacchettiSubItems.map((sub) => (
+                    <li key={sub.id}>
+                      <a
+                        href={`#${sub.id}`}
+                        onClick={handleScroll}
+                        className={`block text-base uppercase font-bold tracking-widest transition-colors ${
+                          activeSection === sub.id
+                            ? "text-[#FF4000]"
+                            : "text-neutral-400"
+                        }`}
+                      >
+                        {sub.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+
+              <li className="w-full text-center">
+                <a
+                  href="#footer-contatti"
+                  onClick={handleScroll}
+                  className={`block text-3xl uppercase font-black tracking-tighter transition-colors ${
+                    activeSection === "footer-contatti"
+                      ? "text-[#FF4000]"
+                      : "text-white"
+                  }`}
+                >
+                  Contatti
+                </a>
+              </li>
             </ul>
 
             <div className="w-12 h-[2px] bg-[#FF4000] my-10 shrink-0"></div>
@@ -471,217 +604,102 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === SEZIONE 2: pacchetti === */}
+        {/* === SEZIONE 2: GALLERIA (Palestra / Area Benessere) === */}
         <section
-          id="pacchetti"
-          className="snap-section w-full h-auto min-h-[100dvh] md:h-[100dvh] md:max-h-[100dvh] flex flex-col bg-neutral-950 relative overflow-hidden"
+          id="galleria-section"
+          className="snap-section w-full h-[100dvh] max-h-[100dvh] bg-neutral-950 relative flex flex-col md:flex-row overflow-hidden"
         >
-          <div className="absolute inset-0 from-gray-900/40 via-neutral-950 to-neutral-950 z-0 pointer-events-none"></div>
-          <div
-            className="absolute inset-0 z-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          ></div>
-
-          {/* CONTENITORE PRINCIPALE */}
-          <div className="w-full flex-1 flex flex-col md:flex-row relative z-10 pt-14 md:pt-18 h-full">
-            {/* COLONNA SINISTRA */}
-            <div className="relative flex-1 flex flex-col justify-center px-6 py-10 md:px-12 pt-8 lg:px-16 overflow-hidden min-h-[calc(100dvh-3.5rem)] md:min-h-0">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover z-0"
+          {/* PANNELLO SINISTRO: PALESTRA (slider foto reali) */}
+          <div className="relative w-full h-1/2 md:h-full md:w-1/2 overflow-hidden group border-b md:border-b-0 md:border-r border-white/5">
+            {gymSlides.map((slide, index) => (
+              <div
+                key={`gym-${index}`}
+                className={`absolute inset-0 transition-opacity duration-1000 ${gymSlide === index ? "opacity-100" : "opacity-0"}`}
               >
-                <source src="/offerta_bg.mp4" type="video/mp4" />
-              </video>
-              <div className="absolute inset-0 bg-black/60 z-[5] pointer-events-none"></div>
-
-              {/* ANIMAZIONE A SINISTRA: Testi (Cambiati per Desktop: lg:text-7xl, lg:text-4xl, ecc.) */}
-              <RevealOnScroll className="relative z-10 space-y-5 lg:space-y-8 pb-16 md:pb-0">
-                <div className="space-y-1">
-                  <h2 className="font-black text-3xl lg:text-7xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
-                    PACCHETTI
-                  </h2>
-                  <p className="font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
-                    offriamo molto di più di una semplice palestra
-                  </p>
-                </div>
-
-                <ul className="space-y-5 lg:space-y-6">
-                  <li className="flex items-start gap-4 group">
-                    <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
-                    <div className="w-full">
-                      <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
-                        pacchetti base
-                      </h3>
-                      <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Ingresso in palestra
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Anamnesi iniziale per capire lo storico allenante
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Programmazione bilanciata in base al livello
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Masterclass formative
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-
-                  <li className="flex items-start gap-4 group">
-                    <div className="mt-2 w-3 h-3 rounded-full bg-[#FF4000] shadow-[0_0_12px_#FF4000] shrink-0" />
-                    <div className="w-full">
-                      <h3 className="text-xl lg:text-4xl font-black text-white uppercase tracking-tight">
-                        pacchetti forge
-                      </h3>
-                      <ul className="mt-2 space-y-1.5 lg:space-y-2 text-neutral-300 text-sm lg:text-lg font-light">
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Ingresso in palestra
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Anamnesi approfondita + piano di allenamento +
-                            un’ora di coaching a settimana
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Nutrizionista con check bimestrale
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2 group/item">
-                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-base" />
-                          <span className="leading-snug group-hover/item:text-white transition-colors">
-                            Accesso a <strong>sauna</strong> e{" "}
-                            <strong>bagno turco</strong>
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                </ul>
-              </RevealOnScroll>
-
-              {/* INDICATORE SCROLL MOBILE CON FADE-IN (Freccia grigio/bianca come hai messo tu) */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20 pointer-events-none animate-fade-in-arrow">
-                <div className="flex flex-col items-center gap-1 animate-bounce">
-                  <span className="text-[10px] text-white/80 uppercase tracking-[0.3em] font-bold drop-shadow-md">
-                    Richiedi Info
-                  </span>
-                  <FaChevronDown className="text-white/80 drop-shadow-md" />
-                </div>
+                <img
+                  src={slide.src}
+                  alt={`Palestra FORGE - foto ${index + 1}`}
+                  className={`w-full h-full object-cover ${slide.position} group-hover:scale-105 transition-transform duration-[3000ms]`}
+                />
               </div>
-            </div>
+            ))}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent pointer-events-none" />
 
-            {/* COLONNA DESTRA: PROMO SETTEMBRE E BOTTONE INFO */}
-            <div
-              id="promo-settembre"
-              className="snap-section relative flex-1 flex flex-col items-center justify-center bg-neutral-950 md:bg-transparent px-4 py-4 md:px-16 md:py-12 min-h-[100dvh] md:min-h-0 md:h-full shrink-0 pt-16 md:pt-0"
+            {/* FRECCE: navigazione manuale a piacere, oltre allo scorrimento automatico */}
+            <button
+              onClick={prevGymSlide}
+              aria-label="Foto precedente"
+              className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:text-[#FF4000] transition-colors"
             >
-              <RevealOnScroll
-                delay={200}
-                className="w-full max-w-xl mx-auto flex flex-col gap-4 md:gap-6"
-              >
-                {/* BOX PROMO SETTEMBRE (Standalone) */}
-                {/* Su mobile padding ridotto a p-5, border-radius ridotto */}
-                <div className="relative p-5 sm:p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-[#FF4000]/40 bg-gradient-to-br from-black/80 to-[#FF4000]/10 backdrop-blur-md overflow-hidden shadow-2xl">
-                  {/* Effetto Glow di sfondo */}
-                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-[#FF4000]/20 blur-3xl rounded-full pointer-events-none" />
+              <FaChevronLeft />
+            </button>
+            <button
+              onClick={nextGymSlide}
+              aria-label="Foto successiva"
+              className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:text-[#FF4000] transition-colors"
+            >
+              <FaChevronRight />
+            </button>
 
-                  <div className="w-full relative z-10">
-                    <div className="flex flex-col mb-3 md:mb-4">
-                      <h3 className="text-[7.5vw] sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight drop-shadow-md whitespace-nowrap self-start">
-                        Inizia a <span className="text-[#FF4000]">Settembre</span>
-                      </h3>
-                    </div>
+            <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12 lg:p-16 z-10">
+              <FaDumbbell className="text-[#FF4000] text-2xl md:text-3xl lg:text-4xl mb-3 drop-shadow-lg" />
+              <h3 className="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
+                Forge
+              </h3>
+            </div>
+          </div>
 
-                    <p className="text-neutral-300 font-medium text-xs md:text-sm lg:text-base mb-4 md:mb-6 uppercase tracking-wider">
-                      Offerta riservata ai nuovi iscritti, valida solo nel mese di
-                      settembre.
-                    </p>
-
-                    {/* Box Prezzi Promo Settembre */}
-                    {/* Su mobile gap ridotto e padding interno ridotto */}
-                    <div className="grid grid-cols-2 gap-2 md:gap-4 mb-4 md:mb-6">
-                      <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-neutral-400 text-[10px] md:text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
-                          Tesseramento
-                        </span>
-                        <div className="flex items-center gap-2 md:gap-3">
-                          <span className="text-3xl md:text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                            20€
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center justify-center text-center">
-                        <span className="text-neutral-400 text-[10px] md:text-xs lg:text-sm uppercase tracking-widest mb-1 font-medium">
-                          Abbonamento Mensile
-                        </span>
-                        <div className="flex items-center gap-2 md:gap-3">
-                          <span className="text-3xl md:text-4xl lg:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                            35€
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Vantaggi */}
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 md:gap-3 text-neutral-300 text-[10px] md:text-xs lg:text-sm font-medium uppercase tracking-wider bg-black/30 p-3 md:p-4 rounded-xl md:rounded-2xl border border-white/5">
-                      <li className="flex items-center gap-2 md:gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
-                        <span>Energia ogni giorno</span>
-                      </li>
-                      <li className="flex items-center gap-2 md:gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
-                        <span>Corpo in forma</span>
-                      </li>
-                      <li className="flex items-center gap-2 md:gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
-                        <span>Mente focalizzata</span>
-                      </li>
-                      <li className="flex items-center gap-2 md:gap-3">
-                        <FaCheck className="text-[#FF4000] shrink-0 text-sm md:text-base" />
-                        <span>Risultati reali</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* BOTTONE PER APRIRE IL POPUP */}
-                {/* Su mobile padding Y ridotto (py-3 invece di py-4) e testo text-base */}
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-3 md:py-4 rounded-full text-base md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
+          {/* PANNELLO DESTRO: AREA BENESSERE (foto in arrivo) */}
+          <div className="relative w-full h-1/2 md:h-full md:w-1/2 overflow-hidden group">
+            {spaSlides.length > 0 ? (
+              spaSlides.map((slide, index) => (
+                <div
+                  key={`spa-${index}`}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${spaSlide === index ? "opacity-100" : "opacity-0"}`}
                 >
-                  Richiedi Info
+                  <img
+                    src={slide.src}
+                    alt={`Area Benessere FORGE - foto ${index + 1}`}
+                    className={`w-full h-full object-cover ${slide.position} group-hover:scale-105 transition-transform duration-[3000ms]`}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-black" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent pointer-events-none" />
+
+            {spaSlides.length === 0 && (
+              <span className="absolute top-6 right-6 sm:top-8 sm:right-8 md:top-12 md:right-12 z-10 px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] md:text-xs font-bold uppercase tracking-widest text-neutral-300">
+                Presto disponibile
+              </span>
+            )}
+
+            {/* FRECCE: navigazione manuale a piacere, oltre allo scorrimento automatico */}
+            {spaSlides.length > 1 && (
+              <>
+                <button
+                  onClick={prevSpaSlide}
+                  aria-label="Foto precedente"
+                  className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:text-[#FF4000] transition-colors"
+                >
+                  <FaChevronLeft />
                 </button>
-              </RevealOnScroll>
+                <button
+                  onClick={nextSpaSlide}
+                  aria-label="Foto successiva"
+                  className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/10 text-white hover:text-[#FF4000] transition-colors"
+                >
+                  <FaChevronRight />
+                </button>
+              </>
+            )}
+
+            <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 md:p-12 lg:p-16 z-10">
+              <FaSpa className="text-[#FF4000] text-2xl md:text-3xl lg:text-4xl mb-3 drop-shadow-lg" />
+              <h3 className="font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none drop-shadow-2xl">
+                Area Benessere
+              </h3>
             </div>
           </div>
         </section>
@@ -689,101 +707,44 @@ export default function Home() {
         {/* === SEZIONE 3: CHI SIAMO === */}
         <section
           id="about-section"
-          className="snap-section w-full min-h-screen md:min-h-[100dvh] bg-neutral-950 relative pb-10 md:pb-32 border-t border-white/5 pt-15 md:pt-18 flex flex-col"
+          className="snap-section w-full h-[100dvh] max-h-[100dvh] bg-neutral-950 relative border-t border-white/5 pt-16 md:pt-20 pb-4 md:pb-8 flex flex-col overflow-hidden"
         >
-          {/* SLIDER IMMAGINI (In alto) */}
-          {/* === DOPPIO SLIDER IMMAGINI (Community / Struttura) === */}
-          <div className="w-full h-[50vh] md:h-[40vh] flex flex-col md:flex-row shrink-0 border-b border-white/5">
-            {/* SINISTRA: COMMUNITY */}
-            <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden group">
-              {communitySlides.map((slide, index) => (
-                <div
-                  key={`c-${index}`}
-                  className={`absolute inset-0 transition-opacity duration-1000 ${communitySlide === index ? "opacity-100" : "opacity-0"}`}
-                >
-                  <img
-                    src={slide.src}
-                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms] ${slide.position}`}
-                  />
-                </div>
-              ))}
-
-              {/* NUOVO: Pallini navigazione Community */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-                {communitySlides.map((_, index) => (
-                  <button
-                    key={`dot-c-${index}`}
-                    onClick={() => setCommunitySlide(index)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                      communitySlide === index
-                        ? "bg-white scale-125" // Pallino attivo (bianco pieno e leggermente più grande)
-                        : "bg-white/40 hover:bg-white/70" // Pallino inattivo (semi-trasparente)
-                    }`}
-                    aria-label={`Vai alla slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* DESTRA: STRUTTURA */}
-            <div className="relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden group border-t md:border-t-0 md:border-l border-black/30">
-              {facilitySlides.map((slide, index) => (
-                <div
-                  key={`f-${index}`}
-                  className={`absolute inset-0 transition-opacity duration-1000 ${facilitySlide === index ? "opacity-100" : "opacity-0"}`}
-                >
-                  <img
-                    src={slide.src}
-                    className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms] ${slide.position}`}
-                  />
-                </div>
-              ))}
-
-              {/* NUOVO: Pallini navigazione Struttura */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-                {facilitySlides.map((_, index) => (
-                  <button
-                    key={`dot-f-${index}`}
-                    onClick={() => setFacilitySlide(index)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                      facilitySlide === index
-                        ? "bg-[#FF4000] scale-125" // Pallino attivo (uso l'arancione che avevi prima per coerenza)
-                        : "bg-white/40 hover:bg-white/70" // Pallino inattivo
-                    }`}
-                    aria-label={`Vai alla slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+          {/* FOTO COMMUNITY (singola, banda edge-to-edge per massimizzare lo spazio verticale) */}
+          <div className="w-full h-[36vh] sm:h-[40vh] md:h-[52vh] shrink-0 relative overflow-hidden group border-b border-white/5">
+            <img
+              src="/FORGE-1.jpg"
+              alt="Community FORGE durante un allenamento di gruppo"
+              className="w-full h-full object-cover object-[50%_20%] group-hover:scale-105 transition-transform duration-[2000ms]"
+            />
           </div>
 
-          {/* TESTO DESCRIZIONE: STORIA E FONDATORI */}
-          <div className="max-w-7xl mx-auto px-6 pt-8 md:pt-12 lg:px-12 flex-1 flex flex-col md:flex-row gap-2 md:gap-16 lg:gap-20 items-start w-full">
+          {/* TESTO: STORIA E FONDATORI */}
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-5 md:pt-8 flex-1 min-h-0 flex flex-col md:flex-row gap-4 md:gap-10 lg:gap-14 items-center w-full">
             {/* ANIMAZIONE TITOLO STORIA */}
-            <RevealOnScroll className="w-full md:w-1/4 shrink-0 space-y-5">
-              <h2 className="font-black text-4xl md:text-5xl lg:text-6xl text-white uppercase tracking-tight leading-none">
+            <RevealOnScroll className="w-full md:w-1/4 shrink-0 space-y-3">
+              <h2 className="font-black text-3xl md:text-4xl lg:text-5xl text-white uppercase tracking-tight leading-none">
                 La Nostra <br className="hidden md:block" />{" "}
                 <span className="text-[#FF4000]">Storia</span>
               </h2>
 
               {/* Nascosto su mobile, visibile su desktop */}
-              <div className="hidden md:block w-16 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
+              <div className="hidden md:block w-14 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
 
               {/* Nascosto su mobile, visibile su desktop */}
-              <p className="hidden md:block text-base md:text-lg text-neutral-300 font-medium uppercase tracking-widest pt-2">
+              <p className="hidden md:block text-sm md:text-base text-neutral-300 font-medium uppercase tracking-widest pt-1">
                 Come nasce Forge.
               </p>
             </RevealOnScroll>
 
-            <div className="w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              {/* ANIMAZIONE CARD 1: L'idea (Appare prima) */}
+            {/* CARD DI TESTO: L'idea + I Fondatori, affiancate (non impilate) per restare in un'unica schermata */}
+            <div className="w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <RevealOnScroll delay={150}>
-                <div className="relative h-full bg-neutral-900/40 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group">
-                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                  <h4 className="text-white font-black text-2xl uppercase tracking-wider mb-4 mt-2">
+                <div className="relative h-full bg-neutral-900/40 backdrop-blur-sm p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group">
+                  <div className="absolute top-0 left-6 md:left-8 w-10 md:w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000] opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                  <h4 className="text-white font-black text-lg md:text-xl uppercase tracking-wider mb-2 md:mb-3 mt-2">
                     L'idea
                   </h4>
-                  <p className="text-sm md:text-base text-neutral-400 font-light leading-relaxed">
+                  <p className="text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
                     FORGE porta l’allenamento oltre la semplice attività fisica.
                     Fondata su disciplina, costanza e rispetto, è uno spazio
                     senza differenze in cui l'obiettivo comune è diventare la
@@ -794,14 +755,13 @@ export default function Home() {
                 </div>
               </RevealOnScroll>
 
-              {/* ANIMAZIONE CARD 2: I Fondatori (Appare un attimo dopo) */}
               <RevealOnScroll delay={300}>
-                <div className="relative h-full bg-neutral-900/40 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group">
-                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                  <h4 className="text-white font-black text-2xl uppercase tracking-wider mb-4 mt-2">
+                <div className="relative h-full bg-neutral-900/40 backdrop-blur-sm p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/5 hover:border-white/10 transition-colors group">
+                  <div className="absolute top-0 left-6 md:left-8 w-10 md:w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000] opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                  <h4 className="text-white font-black text-lg md:text-xl uppercase tracking-wider mb-2 md:mb-3 mt-2">
                     I Fondatori
                   </h4>
-                  <p className="text-sm md:text-base text-neutral-400 font-light leading-relaxed">
+                  <p className="text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
                     Siamo Antonino, Gabriel ed Emanuele, tre ragazzi uniti dalla
                     passione per l’allenamento e il miglioramento continuo.
                     Unendo le forze abbiamo creato FORGE per trasformare il
@@ -815,7 +775,342 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === SEZIONE 4: CONTATTI E FOOTER === */}
+        {/* === SEZIONE 4: PACCHETTI > ABBONAMENTI === */}
+        <section
+          id="abbonamenti"
+          className="snap-section w-full h-auto min-h-[100dvh] flex flex-col bg-neutral-950 relative overflow-hidden"
+        >
+          <img
+            src="/FORGE-2.jpeg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-center z-0"
+          />
+          <div className="absolute inset-0 bg-black/60 z-[1] pointer-events-none"></div>
+
+          <div className="relative z-10 w-full flex-1 flex flex-col justify-center max-w-6xl mx-auto px-6 py-10 md:px-12 lg:px-0 pt-20 md:pt-18">
+            <RevealOnScroll className="space-y-8 lg:space-y-10 pb-16 md:pb-0">
+              <div className="space-y-1 text-center md:text-left">
+                <h2 className="font-black text-3xl lg:text-7xl text-[#FF4000] tracking-wider drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] leading-none">
+                  ABBONAMENTI
+                </h2>
+                <p className="font-medium text-base lg:text-2xl uppercase tracking-widest text-white drop-shadow-md">
+                  scegli la durata più adatta al tuo percorso
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+                {/* CARD 1: MENSILE */}
+                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
+                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
+
+                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
+                    1 mese
+                  </span>
+                  <FaCalendarDay className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
+                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                    Mensile
+                  </h3>
+                  <p className="mt-1 text-sm lg:text-base text-neutral-400 font-light">
+                    Nessun vincolo, massima libertà
+                  </p>
+
+                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Accesso completo alla palestra
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Ideale per iniziare senza impegni lunghi
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Rinnovo semplice mese per mese
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* CARD 2: TRIMESTRALE */}
+                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
+                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
+
+                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
+                    3 mesi
+                  </span>
+                  <FaCalendarWeek className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
+                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                    Trimestrale
+                  </h3>
+                  <p className="mt-1 text-sm lg:text-base text-neutral-400 font-light">
+                    Il giusto equilibrio per risultati concreti
+                  </p>
+
+                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Accesso completo alla palestra
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Continuità nella programmazione
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Supporto costante dello staff
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* CARD 3: SEMESTRALE */}
+                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
+                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
+
+                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
+                    6 mesi
+                  </span>
+                  <FaCalendarAlt className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
+                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                    Semestrale
+                  </h3>
+                  <p className="mt-1 text-sm lg:text-base text-neutral-300 font-light">
+                    Per chi punta a una trasformazione vera
+                  </p>
+
+                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Accesso completo alla palestra
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Percorso completo per la trasformazione
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2 group/item">
+                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                      <span className="leading-snug group-hover/item:text-white transition-colors">
+                        Accesso prioritario alle masterclass
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex justify-center md:justify-start pt-2">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-3 px-8 md:py-4 md:px-10 rounded-full text-base md:text-xl uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
+                >
+                  Richiedi Info
+                </button>
+              </div>
+            </RevealOnScroll>
+
+            {/* INDICATORE SCROLL MOBILE CON FADE-IN */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:hidden z-20 pointer-events-none animate-fade-in-arrow">
+              <div className="flex flex-col items-center gap-1 animate-bounce">
+                <span className="text-[10px] text-white/80 uppercase tracking-[0.3em] font-bold drop-shadow-md">
+                  Prova Gratuita
+                </span>
+                <FaChevronDown className="text-white/80 drop-shadow-md" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* === SEZIONE 5: PACCHETTI > PROVA GRATUITA === */}
+        <section
+          id="prova-gratuita"
+          className="snap-section w-full min-h-[100dvh] flex flex-col md:flex-row bg-neutral-950 relative border-t border-white/5"
+        >
+          {/* COLONNA SINISTRA: VIDEO */}
+          <div className="relative w-full md:w-1/2 h-[45vh] md:h-auto overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/offerta_bg.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/40 md:bg-black/20 pointer-events-none"></div>
+          </div>
+
+          {/* COLONNA DESTRA: DESCRIZIONE + CTA */}
+          <div className="relative w-full md:w-1/2 flex flex-col justify-center px-6 py-14 md:px-16 lg:px-20 md:py-12">
+            <RevealOnScroll className="max-w-2xl">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-8 h-[2px] bg-[#FF4000] shadow-[0_0_8px_#FF4000]"></span>
+                <span className="text-[#FF4000] font-bold uppercase tracking-[0.25em] text-xs md:text-sm">
+                  Inizia il tuo percorso
+                </span>
+              </div>
+
+              <h2 className="font-black text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none mb-6 md:mb-8">
+                Prova <span className="text-[#FF4000]">Gratuita</span>
+              </h2>
+
+              <p className="text-neutral-300 text-base md:text-lg lg:text-xl font-light leading-relaxed mb-8 md:mb-10">
+                Vieni in palestra e lasciati guidare da un coach. Durante la
+                tua prima sessione ti mostreremo la struttura, gli attrezzi e
+                ti seguiremo nell'allenamento, per farti conoscere al meglio
+                il nostro metodo.
+              </p>
+
+              <ul className="space-y-4 mb-10 md:mb-12">
+                <li className="flex items-start gap-3 group">
+                  <div className="mt-1 w-8 h-8 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 flex items-center justify-center shrink-0">
+                    <FaCheck className="text-[#FF4000] text-xs" />
+                  </div>
+                  <span className="text-neutral-300 text-sm md:text-base lg:text-lg font-light leading-snug pt-1">
+                    Un allenamento guidato da un coach dedicato
+                  </span>
+                </li>
+                <li className="flex items-start gap-3 group">
+                  <div className="mt-1 w-8 h-8 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 flex items-center justify-center shrink-0">
+                    <FaCheck className="text-[#FF4000] text-xs" />
+                  </div>
+                  <span className="text-neutral-300 text-sm md:text-base lg:text-lg font-light leading-snug pt-1">
+                    Tour della struttura e degli attrezzi
+                  </span>
+                </li>
+                <li className="flex items-start gap-3 group">
+                  <div className="mt-1 w-8 h-8 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 flex items-center justify-center shrink-0">
+                    <FaCheck className="text-[#FF4000] text-xs" />
+                  </div>
+                  <span className="text-neutral-300 text-sm md:text-base lg:text-lg font-light leading-snug pt-1">
+                    Nessun impegno: solo per conoscerci
+                  </span>
+                </li>
+              </ul>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex items-center gap-3 bg-[#FF4000] hover:bg-white text-white hover:text-neutral-950 border-2 border-transparent hover:border-[#FF4000] font-black py-4 px-7 md:py-5 md:px-10 rounded-full text-sm md:text-lg uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,64,0,0.3)] hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] group"
+              >
+                <FaCalendarCheck className="text-base md:text-xl shrink-0" />
+                Prenota la Prova Gratuita
+                <FaArrowRight className="text-sm md:text-base shrink-0 transition-transform group-hover:translate-x-1" />
+              </button>
+            </RevealOnScroll>
+          </div>
+        </section>
+
+        {/* === SEZIONE 6: PACCHETTI > PROMO SETTEMBRE (tipografia gigante + card, diversa dalle altre) === */}
+        <section
+          id="promo-settembre"
+          className="snap-section w-full min-h-[100dvh] flex items-center bg-neutral-950 relative overflow-hidden border-t border-white/5 px-6 py-20"
+        >
+          {/* Bagliori decorativi di sfondo */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/3 w-96 h-96 bg-[#FF4000]/10 blur-[120px] rounded-full"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#FF4000]/5 blur-[120px] rounded-full"></div>
+          </div>
+
+          <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 items-center">
+            {/* SINISTRA: TITOLO GIGANTE */}
+            <RevealOnScroll className="md:col-span-7 text-center md:text-left">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-[#FF4000] text-white text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-lg">
+                Offerta a tempo limitato
+              </span>
+              <h2
+                className="font-black text-white uppercase leading-[0.85] tracking-tight"
+                style={{ fontSize: "clamp(3rem, 7vw, 7rem)" }}
+              >
+                Inizia a
+                <br />
+                <span className="text-[#FF4000]">Settembre</span>
+              </h2>
+              <p className="mt-6 text-neutral-300 text-sm md:text-base font-medium uppercase tracking-wider max-w-md mx-auto md:mx-0">
+                Offerta riservata ai nuovi iscritti, valida solo nel mese di
+                settembre.
+              </p>
+            </RevealOnScroll>
+
+            {/* DESTRA: CARD PREZZI */}
+            <RevealOnScroll delay={200} className="md:col-span-5">
+              <div className="relative p-8 md:p-10 rounded-[2rem] border border-[#FF4000]/40 bg-neutral-900/60 backdrop-blur-md overflow-hidden shadow-2xl">
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 100% 0%, rgba(255,64,0,0.25), transparent 55%)",
+                  }}
+                ></div>
+
+                <div className="relative z-10">
+                  {/* Box Prezzi Promo Settembre */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 flex flex-col items-center justify-center text-center">
+                      <span className="text-neutral-400 text-xs md:text-sm uppercase tracking-widest mb-1 font-medium">
+                        Tesseramento
+                      </span>
+                      <span className="text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                        20€
+                      </span>
+                    </div>
+
+                    <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 flex flex-col items-center justify-center text-center">
+                      <span className="text-neutral-400 text-xs md:text-sm uppercase tracking-widest mb-1 font-medium">
+                        Abbonamento Mensile
+                      </span>
+                      <span className="text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                        35€
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Vantaggi */}
+                  <ul className="grid grid-cols-2 gap-3 text-neutral-300 text-xs md:text-sm font-medium uppercase tracking-wider bg-black/30 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/5 mb-8">
+                    <li className="flex items-center gap-2">
+                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <span>Energia ogni giorno</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <span>Corpo in forma</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <span>Mente focalizzata</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
+                      <span>Risultati reali</span>
+                    </li>
+                  </ul>
+
+                  {/* BOTTONE PER APRIRE IL POPUP */}
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-4 rounded-full text-base md:text-lg uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
+                  >
+                    Richiedi Info
+                  </button>
+                </div>
+              </div>
+            </RevealOnScroll>
+          </div>
+        </section>
+
+        {/* === SEZIONE 7: CONTATTI E FOOTER === */}
         <section
           id="footer-contatti"
           className="snap-section w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"

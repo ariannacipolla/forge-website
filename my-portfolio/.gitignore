@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code local tooling (skills/plugins, not part of the site)
+.claude/
+
+# raw phone originals (only the converted .jpg/.PNG are used by the site)
+*.HEIC
