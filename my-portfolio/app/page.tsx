@@ -16,9 +16,6 @@ import {
   FaChevronRight,
   FaCalendarCheck,
   FaArrowRight,
-  FaCalendarDay,
-  FaCalendarWeek,
-  FaCalendarAlt,
   FaHome,
   FaImages,
   FaInfoCircle,
@@ -924,117 +921,73 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-                {/* CARD 1: MENSILE */}
-                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
-                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 items-stretch">
+                {[
+                  {
+                    duration: "1 mese",
+                    title: "Mensile",
+                    tagline: "Massima libertà",
+                    bullets: [
+                      "Ideale per iniziare senza impegni lunghi",
+                      "Rinnovo semplice mese per mese",
+                    ],
+                  },
+                  {
+                    duration: "3 mesi",
+                    title: "Trimestrale",
+                    tagline: "Il giusto equilibrio",
+                    bullets: [
+                      "Continuità nella programmazione",
+                      "Supporto costante dello staff",
+                    ],
+                  },
+                  {
+                    duration: "6 mesi",
+                    title: "Semestrale",
+                    tagline: "Trasformazione vera",
+                    bullets: [
+                      "Percorso completo per la trasformazione",
+                      "Il tempo giusto per costruire abitudini solide",
+                    ],
+                  },
+                  {
+                    duration: "12 mesi",
+                    title: "Annuale",
+                    tagline: "Risultati duraturi",
+                    bullets: [
+                      "Percorso di allenamento continuo e strutturato",
+                      "Massima costanza per risultati duraturi",
+                    ],
+                  },
+                ].map((plan) => (
+                  <div
+                    key={plan.title}
+                    className="relative h-full bg-neutral-900/40 backdrop-blur-sm px-7 py-10 lg:px-8 lg:py-12 rounded-[2rem] border border-white/10 hover:border-[#FF4000]/60 transition-colors group flex flex-col"
+                  >
+                    <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md opacity-70 group-hover:opacity-100 transition-opacity"></div>
 
-                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
-                    1 mese
-                  </span>
-                  <FaCalendarDay className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
-                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
-                    Mensile
-                  </h3>
-                  <p className="mt-1 text-sm lg:text-base text-neutral-400 font-light">
-                    Nessun vincolo, massima libertà
-                  </p>
+                    <span className="text-[11px] lg:text-xs font-bold uppercase tracking-[0.2em] text-[#FF4000] mb-6">
+                      {plan.duration}
+                    </span>
+                    <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
+                      {plan.title}
+                    </h3>
+                    <p className="mt-2 text-sm lg:text-base text-neutral-400 font-light">
+                      {plan.tagline}
+                    </p>
 
-                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Accesso completo alla palestra
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Ideale per iniziare senza impegni lunghi
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Rinnovo semplice mese per mese
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* CARD 2: TRIMESTRALE */}
-                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
-                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
-
-                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
-                    3 mesi
-                  </span>
-                  <FaCalendarWeek className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
-                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
-                    Trimestrale
-                  </h3>
-                  <p className="mt-1 text-sm lg:text-base text-neutral-400 font-light">
-                    Il giusto equilibrio per risultati concreti
-                  </p>
-
-                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Accesso completo alla palestra
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Continuità nella programmazione
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Supporto costante dello staff
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* CARD 3: SEMESTRALE */}
-                <div className="relative h-full bg-neutral-900/60 backdrop-blur-sm p-6 lg:p-8 rounded-[2rem] border-2 border-[#FF4000]/50 hover:border-[#FF4000] transition-colors group flex flex-col shadow-[0_0_30px_rgba(255,64,0,0.15)]">
-                  <div className="absolute top-0 left-8 w-12 h-1 bg-[#FF4000] rounded-b-md shadow-[0_0_8px_#FF4000]"></div>
-
-                  <span className="self-start px-3 py-1 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/30 text-[10px] lg:text-xs font-bold uppercase tracking-widest text-[#FF4000] mb-4">
-                    6 mesi
-                  </span>
-                  <FaCalendarAlt className="text-[#FF4000] text-2xl lg:text-3xl mb-3" />
-                  <h3 className="text-2xl lg:text-3xl font-black text-white uppercase tracking-tight">
-                    Semestrale
-                  </h3>
-                  <p className="mt-1 text-sm lg:text-base text-neutral-300 font-light">
-                    Per chi punta a una trasformazione vera
-                  </p>
-
-                  <ul className="mt-5 space-y-2 text-neutral-300 text-sm lg:text-base font-light flex-1">
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Accesso completo alla palestra
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Percorso completo per la trasformazione
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2 group/item">
-                      <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
-                      <span className="leading-snug group-hover/item:text-white transition-colors">
-                        Accesso prioritario alle masterclass
-                      </span>
-                    </li>
-                  </ul>
-                </div>
+                    <ul className="mt-8 space-y-3 text-neutral-300 text-sm lg:text-base font-light flex-1">
+                      {plan.bullets.map((bullet) => (
+                        <li key={bullet} className="flex items-start gap-2 group/item">
+                          <FaCheck className="text-[#FF4000] mt-1 shrink-0 transition-transform group-hover/item:scale-110 text-xs lg:text-sm" />
+                          <span className="leading-snug group-hover/item:text-white transition-colors">
+                            {bullet}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
 
               <div className="flex flex-col md:flex-row items-center md:items-center justify-center md:justify-between gap-4 pt-2">
