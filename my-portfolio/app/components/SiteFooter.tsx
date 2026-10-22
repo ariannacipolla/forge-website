@@ -8,9 +8,7 @@ export default function SiteFooter() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div className="space-y-4">
-            <span className="font-sports text-3xl tracking-[0.10em] text-white">
-              FORGE
-            </span>
+            <img src="/forge-logo.webp" alt="FORGE" className="h-10 w-auto" />
             <div className="space-y-1 text-xs md:text-sm text-neutral-500">
               <p>
                 <strong className="text-neutral-300 font-medium">

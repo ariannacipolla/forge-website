@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { TransitionLink } from "../components/PageTransitions";
 import {
   FaArrowLeft,
   FaArrowRight,
   FaCheck,
   FaDumbbell,
   FaInstagram,
+  FaPhoneAlt,
   FaTimes,
   FaTrophy,
   FaVenusMars,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
@@ -25,6 +27,11 @@ import useSectionSnap from "../components/useSectionSnap";
 
 const INSTAGRAM_URL = "https://www.instagram.com/__.forge.__";
 const EVENTO_ISO = "2026-11-15T09:00:00";
+const TELEFONO_GAMES = "+393895734990";
+const TELEFONO_GAMES_VISIBILE = "389 573 4990";
+const WHATSAPP_GAMES = `https://wa.me/393895734990?text=${encodeURIComponent(
+  "Ciao! Vorrei informazioni sui Forge Games del 15 novembre.",
+)}`;
 
 export default function ForgeGamesPage() {
   useSectionSnap();
@@ -44,16 +51,24 @@ export default function ForgeGamesPage() {
     });
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCallOpen, setIsCallOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
   useEffect(() => {
-    document.body.style.overflow = isModalOpen ? "hidden" : "";
+    document.body.style.overflow = isModalOpen || isCallOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, isCallOpen]);
+
+  useEffect(() => {
+    if (!isCallOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsCallOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isCallOpen]);
 
   const dettagli = [
     { icon: FaVenusMars, label: "Categorie", lines: ["Maschile", "& Femminile"] },
@@ -69,7 +84,7 @@ export default function ForgeGamesPage() {
       <main className="relative bg-neutral-950 text-white selection:bg-gray-500 selection:text-white">
         {/* HEADER */}
         <header className="fixed top-0 left-0 w-full z-[300] flex items-center justify-between px-5 py-4 md:px-12 md:py-5">
-          <Link
+          <TransitionLink
             href="/"
             aria-label="Torna alla home"
             className="group relative block h-8 w-[92px] md:w-[96px] rounded-md overflow-hidden bg-[#FF4000] shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
@@ -82,7 +97,7 @@ export default function ForgeGamesPage() {
               <span className="absolute left-0 top-1/4 h-1/2 w-px bg-white" />
               Home
             </span>
-          </Link>
+          </TransitionLink>
 
           <div className="flex items-center gap-4 md:gap-6">
             <a
@@ -242,7 +257,7 @@ export default function ForgeGamesPage() {
               className="xl:row-span-2 flex flex-col items-center xl:items-end"
             >
               <Countdown targetDate={EVENTO_ISO} />
-              <p className="mt-[min(1rem,2dvh)] text-center xl:text-right text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white/50">
+              <p className="mt-[min(1rem,2dvh)] text-center xl:text-right text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white/50 max-xl:[@media(max-height:700px)]:hidden">
                 Domenica 15 novembre · Albino (BG)
               </p>
             </RevealOnScroll>
@@ -258,14 +273,83 @@ export default function ForgeGamesPage() {
                 Iscriviti alla gara
                 <FaArrowRight className="text-sm sm:text-base shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
-              <p className="mt-[min(1rem,2dvh)] text-center xl:text-left text-xs sm:text-sm text-white/60">
+              <p className="mt-[min(1rem,2dvh)] text-center xl:text-left text-xs sm:text-sm text-white/60 max-xl:[@media(max-height:700px)]:hidden">
                 Lasciaci i tuoi contatti: ti ricontattiamo noi con tutti i dettagli.
               </p>
+
+              {/* in alternativa al modulo: telefono o WhatsApp. Su schermi bassi (stacked) si nascondono le righe ripetute */}
+              <div className="mt-[min(1.25rem,2.4dvh)] flex flex-wrap items-center justify-center xl:justify-start gap-2 sm:gap-3">
+                <span className="hidden sm:inline text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-white/40">
+                  Oppure
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsCallOpen(true)}
+                  className="flex items-center gap-2 rounded-xl border border-white/15 bg-black/40 backdrop-blur-sm px-4 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-white transition-colors hover:border-[#FF4000] hover:text-[#FF4000]"
+                >
+                  <FaPhoneAlt className="text-[#FF4000] shrink-0" />
+                  {TELEFONO_GAMES_VISIBILE}
+                </button>
+                <a
+                  href={WHATSAPP_GAMES}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-xl border border-white/15 bg-black/40 backdrop-blur-sm px-4 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-white transition-colors hover:border-[#25D366] hover:text-[#25D366]"
+                >
+                  <FaWhatsapp className="text-[#25D366] text-base shrink-0" />
+                  WhatsApp
+                </a>
+              </div>
             </RevealOnScroll>
           </div>
         </section>
 
         <SiteFooter />
+
+        {/* === CONFERMA CHIAMATA === */}
+        <div
+          className={`fixed inset-0 z-[500] flex items-center justify-center p-4 transition-opacity duration-300 ${
+            isCallOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+          }`}
+        >
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsCallOpen(false)} />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="call-title"
+            className={`relative w-full max-w-sm rounded-[2rem] border border-white/10 bg-neutral-900 p-7 text-center shadow-2xl transition-transform duration-300 ${
+              isCallOpen ? "scale-100" : "scale-95"
+            }`}
+          >
+            <div className="mx-auto w-14 h-14 rounded-full bg-[#FF4000]/10 border border-[#FF4000]/40 flex items-center justify-center">
+              <FaPhoneAlt className="text-[#FF4000] text-xl" />
+            </div>
+            <h3 id="call-title" className="mt-5 font-black uppercase tracking-tight text-white text-xl">
+              Vuoi chiamare?
+            </h3>
+            <p className="mt-2 text-sm text-neutral-400">
+              Stai per chiamare il{" "}
+              <span className="font-bold text-white whitespace-nowrap">{TELEFONO_GAMES_VISIBILE}</span>
+            </p>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setIsCallOpen(false)}
+                className="rounded-xl border border-white/15 py-3 text-sm font-bold uppercase tracking-wider text-white/80 transition-colors hover:border-white/40 hover:text-white"
+              >
+                Annulla
+              </button>
+              <a
+                href={`tel:${TELEFONO_GAMES}`}
+                onClick={() => setIsCallOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#FF4000] py-3 text-sm font-black uppercase tracking-wider text-white shadow-[0_0_20px_rgba(255,64,0,0.4)] transition-colors hover:bg-[#a30000]"
+              >
+                <FaPhoneAlt className="text-xs" />
+                Chiama
+              </a>
+            </div>
+          </div>
+        </div>
 
         {/* === MODAL ISCRIZIONE === */}
         <div

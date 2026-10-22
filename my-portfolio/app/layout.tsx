@@ -2,6 +2,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
+import { PageTransitionProvider } from "./components/PageTransitions";
 import "./globals.css";
 
 // Configurazione "Smart": mappiamo ogni peso al suo file specifico
@@ -98,7 +99,7 @@ export default function RootLayout({
     <html lang="it" className="scroll-smooth overscroll-none">
       {/* Abbiamo aggiunto ${sportsWorld.variable} alle classi del body */}
       <body className={`${saira.variable} ${sportsWorld.variable} antialiased`}>
-        {children}
+        <PageTransitionProvider>{children}</PageTransitionProvider>
         <SpeedInsights />
         {/* Banner cookie iubenda: deve comparire su tutte le pagine del sito */}
         <Script

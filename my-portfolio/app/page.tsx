@@ -25,7 +25,7 @@ import {
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
-import Link from "next/link";
+import { TransitionLink } from "./components/PageTransitions";
 
 import { Analytics } from "@vercel/analytics/react";
 import { track } from "@vercel/analytics";
@@ -246,9 +246,11 @@ export default function Home() {
           }`}
         >
           <div className="z-[310]">
-            <span className="font-sports text-2xl md:text-5xl tracking-[0.10em] text-white">
-              FORGE
-            </span>
+            <img
+              src="/forge-logo.webp"
+              alt="FORGE"
+              className="h-8 md:h-12 w-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]"
+            />
           </div>
 
           {/* Desktop Nav */}
@@ -316,7 +318,7 @@ export default function Home() {
               </li>
 
               <li>
-                <Link
+                <TransitionLink
                   href="/forge-games"
                   className="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#FF4000] shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
@@ -324,7 +326,7 @@ export default function Home() {
                   <span className="text-xs font-bold tracking-[0.18em] text-white">
                     Forge Games
                   </span>
-                </Link>
+                </TransitionLink>
               </li>
             </ul>
           </nav>
@@ -526,7 +528,7 @@ export default function Home() {
                   transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
                 }}
               >
-                <Link
+                <TransitionLink
                   href="/forge-games"
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-4 w-full p-4 rounded-[1.5rem] border border-[#FF4000] bg-[#FF4000]/10"
@@ -538,7 +540,7 @@ export default function Home() {
                     Forge Games
                   </span>
                   <FaArrowRight className="text-sm text-[#FF4000] shrink-0" />
-                </Link>
+                </TransitionLink>
               </li>
             </ul>
 

@@ -76,16 +76,25 @@ export default function useSectionSnap() {
     const settle = () => {
       const viewport = window.innerHeight;
       const current = window.scrollY;
-      let nearest: number | null = null;
 
+      // punti di aggancio: inizio di ogni sezione, fine delle sezioni piu' alte dello schermo
+      // (cosi' si puo' scendere a vederne il fondo, es. il footer) e fondo della pagina
+      const points: number[] = [document.documentElement.scrollHeight - viewport];
       document.querySelectorAll<HTMLElement>(".snap-section").forEach((el) => {
         const top = el.getBoundingClientRect().top + current;
-        const distance = Math.abs(top - current);
-        if (distance < 4 || distance > viewport * THRESHOLD) return;
-        if (nearest === null || distance < Math.abs(nearest - current)) {
-          nearest = top;
-        }
+        points.push(top);
+        if (el.offsetHeight > viewport + 4) points.push(top + el.offsetHeight - viewport);
       });
+
+      // gia' allineati a un punto: non spostarsi verso un altro vicino
+      if (points.some((p) => Math.abs(p - current) < 4)) return;
+
+      let nearest: number | null = null;
+      for (const p of points) {
+        const distance = Math.abs(p - current);
+        if (distance > viewport * THRESHOLD) continue;
+        if (nearest === null || distance < Math.abs(nearest - current)) nearest = p;
+      }
 
       if (nearest === null) return;
 
