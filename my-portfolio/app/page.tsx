@@ -34,6 +34,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import RevealOnScroll from "./components/RevealOnScroll";
 import SiteFooter from "./components/SiteFooter";
 import useSectionSnap from "./components/useSectionSnap";
+import ContactSection from "./components/ContactSection";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -957,122 +958,13 @@ export default function Home() {
         {/* === SEZIONE 6: CONTATTI E FOOTER === */}
         <section
           id="footer-contatti"
-          className="snap-section w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"
+          className="snap-section w-full flex flex-col bg-neutral-950 relative border-t border-white/5"
         >
-          {/* === CONTATTI === */}
-          <div className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-24 flex flex-col md:flex-row gap-8 lg:gap-16 items-center md:items-stretch">
-            {/* ANIMAZIONE CONTATTI (Appare prima la lista a sinistra) */}
-            <RevealOnScroll className="w-full md:w-1/2 flex flex-col justify-center space-y-10 lg:space-y-14">
-              <div className="space-y-4">
-                <h2 className="font-black text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight leading-none">
-                  Contattaci
-                </h2>
-                <div className="w-20 h-1.5 bg-[#FF4000] shadow-[0_0_10px_#FF4000]"></div>
-              </div>
-
-              <div className="flex flex-col text-neutral-300 text-lg font-light">
-                <a
-                  href={MAPS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-5 group cursor-pointer p-4 -ml-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all"
-                >
-                  <div className="w-14 h-14 rounded-full bg-neutral-900 flex items-center justify-center border border-white/10 group-hover:border-[#FF4000] group-hover:bg-[#FF4000]/10 transition-colors shrink-0">
-                    <FaMapMarkerAlt className="text-[#FF4000] text-xl group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white group-hover:text-[#FF4000] transition-colors">
-                      Via Isla, 16
-                    </p>
-                    <p className="text-sm md:text-base text-neutral-400 group-hover:text-neutral-300 transition-colors">
-                      24021 Albino BG
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href="mailto:info@forgebuildyourstrength.com"
-                  className="flex items-center gap-5 group cursor-pointer p-4 -ml-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all"
-                >
-                  <div className="w-14 h-14 rounded-full bg-neutral-900 flex items-center justify-center border border-white/10 group-hover:border-[#FF4000] group-hover:bg-[#FF4000]/10 transition-colors shrink-0">
-                    <FaEnvelope className="text-[#FF4000] text-xl group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="font-medium text-white group-hover:text-[#FF4000] transition-colors truncate">
-                      Scrivici un'email
-                    </p>
-                    <p className="text-sm md:text-base text-neutral-400 group-hover:text-neutral-300 transition-colors truncate">
-                      info@forgebuildyourstrength.com
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href={INSTAGRAM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-5 group cursor-pointer p-4 -ml-4 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all"
-                >
-                  <div className="w-14 h-14 rounded-full bg-neutral-900 flex items-center justify-center border border-white/10 group-hover:border-[#FF4000] group-hover:bg-[#FF4000]/10 transition-colors shrink-0">
-                    <FaInstagram className="text-[#FF4000] text-2xl group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white group-hover:text-[#FF4000] transition-colors">
-                      Seguici su Instagram
-                    </p>
-                    <p className="text-sm md:text-base text-neutral-400 group-hover:text-neutral-300 transition-colors tracking-widest">
-                      __.forge.__
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </RevealOnScroll>
-
-            {/* ANIMAZIONE MAPPA (Appare con 200ms di ritardo) */}
-            <RevealOnScroll
-              delay={200}
-              className="w-full md:w-1/2 min-h-[400px] md:min-h-0 relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl group"
-            >
-              {/* Overlay messaggio cookie - solo se non ancora accettati */}
-              {!mapCookiesAccepted && (
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-neutral-900/90 backdrop-blur-md p-6 text-center">
-                  <FaMapMarkerAlt className="text-4xl text-[#FF4000] mb-4" />
-                  <p className="text-white font-medium mb-4 max-w-xs">
-                    Per visualizzare la mappa, accetta i cookie di Google
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={handleAcceptMapCookies}
-                      className="bg-[#FF4000] hover:bg-[#a30000] text-white font-bold py-3 px-6 rounded-full transition-colors"
-                    >
-                      Accetta cookie
-                    </button>
-                    <a
-                      href={MAPS_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border border-white/30 hover:border-white/60 text-white font-bold py-3 px-6 rounded-full transition-colors"
-                    >
-                      Apri in Maps
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {/* Overlay nero: trasparente su mobile, scuro su desktop (e trasparente all'hover) */}
-              <div className="absolute inset-0 bg-transparent md:bg-black/30 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
-
-              {/* Mappa: colori originali su mobile, desaturata su desktop (e originale all'hover) */}
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1370.2145543812785!2d9.81374152700306!3d45.77402235125394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47815956ef84704d%3A0x963cea9bf8c1e1cb!2sFORGE!5e1!3m2!1sit!2sit!4v1781173110256!5m2!1sit!2sit"
-                className="absolute inset-0 w-full h-full grayscale-0 opacity-100 md:grayscale-[60%] md:opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </RevealOnScroll>
-          </div>
+          <ContactSection
+            onOpenForm={() => setIsModalOpen(true)}
+            mapCookiesAccepted={mapCookiesAccepted}
+            onAcceptMapCookies={handleAcceptMapCookies}
+          />
 
           <SiteFooter />
         </section>
