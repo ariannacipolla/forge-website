@@ -1,6 +1,7 @@
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 
 // Configurazione "Smart": mappiamo ogni peso al suo file specifico
@@ -99,6 +100,16 @@ export default function RootLayout({
       <body className={`${saira.variable} ${sportsWorld.variable} antialiased`}>
         {children}
         <SpeedInsights />
+        {/* Banner cookie iubenda: deve comparire su tutte le pagine del sito */}
+        <Script
+          src="https://embeds.iubenda.com/widgets/058c2eba-1f08-4980-8ef7-e8f6e2b32379.js"
+          strategy="afterInteractive"
+        />
+        {/* MOTORE POPUP POLICY IUBENDA (link Privacy/Cookie Policy del footer) */}
+        <Script
+          src="https://cdn.iubenda.com/iubenda.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaInstagram,
   FaChevronDown,
@@ -20,57 +20,20 @@ import {
   FaImages,
   FaInfoCircle,
   FaTags,
+  FaTrophy,
+  FaMedal,
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
-import Script from "next/script";
+import Link from "next/link";
 
 import { Analytics } from "@vercel/analytics/react";
 import { track } from "@vercel/analytics";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// --- NUOVO COMPONENTE DI ANIMAZIONE: REVEAL ON SCROLL ---
-// Avvolgi qualsiasi elemento in <RevealOnScroll> per farlo apparire dolcemente
-function RevealOnScroll({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target); // Si anima solo la prima volta che lo vedi
-        }
-      },
-      { threshold: 0.15 }, // Parte quando il 15% dell'elemento è visibile
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-[2000ms] ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
-      } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-}
-// --------------------------------------------------------
+import RevealOnScroll from "./components/RevealOnScroll";
+import SiteFooter from "./components/SiteFooter";
+import useSectionSnap from "./components/useSectionSnap";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -162,128 +125,7 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScrollBg);
   }, []);
 
-  // AGGANCIO DOLCE ALLE SEZIONI (mobile e desktop).
-  // Lo scroll-snap CSS spezzava l'inerzia del dito, quindi qui non tocchiamo
-  // mai il gesto in corso: aspettiamo che lo scroll si fermi da solo e, se ci
-  // si e' fermati vicino all'inizio di una sezione, scivoliamo fino al bordo.
-  // Su desktop lo scroll con la rotella e' gestito da Lenis (smoothWheel): lo
-  // mettiamo in pausa durante il nostro aggancio per evitare che le due
-  // animazioni si contendano lo scroll nello stesso momento.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const SETTLE_DELAY = 160; // ms di quiete prima di considerare finito lo scroll
-    const THRESHOLD = 0.3; // aggancia solo entro il 30% dell'altezza schermo
-
-    // Ease-in-out: la pagina e' ferma quando parte l'aggancio, quindi si avvia
-    // in punta di piedi invece di scattare come lo smooth nativo del browser.
-    const easeInOutCubic = (t: number) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let frame: number | null = null;
-    let isTouching = false;
-    let ignoreUntil = 0; // finestra in cui lo scroll e' nostro, non dell'utente
-    let lenisStopped = false;
-
-    const clearTimer = () => {
-      if (timer) clearTimeout(timer);
-      timer = null;
-    };
-
-    const cancelAnimation = () => {
-      if (frame !== null) cancelAnimationFrame(frame);
-      frame = null;
-      ignoreUntil = 0;
-      if (lenisStopped) {
-        lenis?.start();
-        lenisStopped = false;
-      }
-    };
-
-    // Animiamo noi i frame invece di usare scrollTo({ behavior: "smooth" }):
-    // il nativo parte di scatto e non lascia scegliere durata ed easing.
-    const glideTo = (to: number, duration: number) => {
-      cancelAnimation(); // ferma un aggancio precedente e riavvia Lenis, se serve
-
-      const from = window.scrollY;
-      const start = performance.now();
-
-      lenis?.stop();
-      lenisStopped = true;
-      ignoreUntil = Date.now() + duration * 1000 + 250;
-
-      const step = (now: number) => {
-        const t = Math.min((now - start) / (duration * 1000), 1);
-        window.scrollTo(0, from + (to - from) * easeInOutCubic(t));
-        if (t < 1) {
-          frame = requestAnimationFrame(step);
-        } else {
-          frame = null;
-          ignoreUntil = Date.now() + 120;
-          lenis?.start();
-          lenisStopped = false;
-        }
-      };
-
-      frame = requestAnimationFrame(step);
-    };
-
-    const settle = () => {
-      const viewport = window.innerHeight;
-      const current = window.scrollY;
-      let nearest: number | null = null;
-
-      document.querySelectorAll<HTMLElement>(".snap-section").forEach((el) => {
-        const top = el.getBoundingClientRect().top + current;
-        const distance = Math.abs(top - current);
-        if (distance < 4 || distance > viewport * THRESHOLD) return;
-        if (nearest === null || distance < Math.abs(nearest - current)) {
-          nearest = top;
-        }
-      });
-
-      if (nearest === null) return;
-
-      // Piu' e' lontano il bordo, piu' lunga l'animazione: gli aggiustamenti
-      // piccoli restano rapidi, quelli lunghi non sembrano uno strappo.
-      const distance = Math.abs(nearest - current);
-      const duration = 0.6 + (distance / (viewport * THRESHOLD)) * 0.7;
-
-      glideTo(nearest, duration);
-    };
-
-    const onScroll = () => {
-      if (isTouching || Date.now() < ignoreUntil) return;
-      clearTimer();
-      timer = setTimeout(settle, SETTLE_DELAY);
-    };
-
-    // Un nuovo tocco ha sempre la precedenza: annulla l'aggancio in sospeso.
-    const onTouchStart = () => {
-      isTouching = true;
-      ignoreUntil = 0;
-      clearTimer();
-      cancelAnimation(); // il gesto dell'utente ha sempre la precedenza
-    };
-    const onTouchEnd = () => {
-      isTouching = false;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
-
-    return () => {
-      clearTimer();
-      cancelAnimation();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("touchcancel", onTouchEnd);
-    };
-  }, [lenis]);
+  useSectionSnap();
 
   useEffect(() => {
     // Usiamo un Set per tracciare ogni sezione una sola volta per visita
@@ -345,7 +187,6 @@ export default function Home() {
   const pacchettiSubItems = [
     { id: "abbonamenti", label: "Abbonamenti" },
     { id: "prova-gratuita", label: "Prova Gratuita" },
-    { id: "promo-settembre", label: "Promo Settembre" },
   ];
   const pacchettiSubIds = pacchettiSubItems.map((item) => item.id);
 
@@ -411,8 +252,8 @@ export default function Home() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2">
-            <ul className="flex gap-8 text-sm uppercase tracking-[0.2em] font-medium text-gray-200">
+          <nav className="hidden xl:flex absolute left-1/2 -translate-x-1/2">
+            <ul className="flex items-center gap-6 2xl:gap-8 whitespace-nowrap text-sm uppercase tracking-[0.2em] font-medium text-gray-200">
               {[
                 { id: "home", label: "Home" },
                 { id: "galleria-section", label: "Galleria" },
@@ -473,10 +314,22 @@ export default function Home() {
                   Contatti
                 </a>
               </li>
+
+              <li>
+                <Link
+                  href="/forge-games"
+                  className="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#FF4000] shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <FaMedal className="text-[13px] text-white transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
+                  <span className="text-xs font-bold tracking-[0.18em] text-white">
+                    Forge Games
+                  </span>
+                </Link>
+              </li>
             </ul>
           </nav>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden xl:flex items-center gap-6">
             <a
               href={INSTAGRAM_URL}
               target="_blank"
@@ -495,7 +348,7 @@ export default function Home() {
 
           {/* Bottone Menu Hamburger */}
           <button
-            className="md:hidden z-[310] p-2 text-xl text-white"
+            className="xl:hidden z-[310] p-2 text-xl text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle Menu"
           >
@@ -505,7 +358,7 @@ export default function Home() {
 
         {/* Overlay Menu Mobile */}
         <div
-          className={`fixed inset-0 bg-neutral-950 transition-all duration-500 ease-in-out z-[250] md:hidden ${
+          className={`fixed inset-0 bg-neutral-950 transition-all duration-500 ease-in-out z-[250] xl:hidden ${
             isMenuOpen
               ? "opacity-100 visible"
               : "opacity-0 invisible pointer-events-none"
@@ -664,6 +517,29 @@ export default function Home() {
                   </span>
                 </a>
               </li>
+
+              <li
+                className="transition-all duration-500 ease-out"
+                style={{
+                  transitionDelay: isMenuOpen ? "400ms" : "0ms",
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
+                <Link
+                  href="/forge-games"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-4 w-full p-4 rounded-[1.5rem] border border-[#FF4000] bg-[#FF4000]/10"
+                >
+                  <span className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg bg-[#FF4000] text-white">
+                    <FaTrophy />
+                  </span>
+                  <span className="flex-1 text-xl font-black uppercase tracking-tight text-[#FF4000]">
+                    Forge Games
+                  </span>
+                  <FaArrowRight className="text-sm text-[#FF4000] shrink-0" />
+                </Link>
+              </li>
             </ul>
 
             <div
@@ -698,19 +574,6 @@ export default function Home() {
           className="snap-section relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
           <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
-            {/* BADGE PROMO SETTEMBRE CON BORDO SFUMATO */}
-            <div className="mb-4 md:mb-8 pointer-events-auto">
-              <a
-                href="#promo-settembre"
-                onClick={handleScroll}
-                className="relative inline-flex items-center justify-center px-8 py-3 rounded-full bg-black/50 backdrop-blur-sm text-white font-bold text-sm md:text-base uppercase tracking-widest border border-white/5 hover:border-[#FF4000] transition-all duration-300 hover:bg-[#FF4000]/10 hover:shadow-[0_0_25px_rgba(255,64,0,0.4)] group"
-              >
-                <span className="group-hover:text-[#FF4000] transition-colors duration-300">
-                  Scopri la Promo Settembre
-                </span>
-              </a>
-            </div>
-
             {/* TITOLO PRINCIPALE */}
             <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right pointer-events-none select-none">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH
@@ -1089,104 +952,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === SEZIONE 6: PACCHETTI > PROMO SETTEMBRE (tipografia gigante + card, diversa dalle altre) === */}
-        <section
-          id="promo-settembre"
-          className="snap-section w-full min-h-[100dvh] flex items-center bg-neutral-950 relative overflow-hidden border-t border-white/5 px-6 py-20"
-        >
-          {/* Bagliori decorativi di sfondo */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/3 w-96 h-96 bg-[#FF4000]/10 blur-[120px] rounded-full"></div>
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#FF4000]/5 blur-[120px] rounded-full"></div>
-          </div>
-
-          <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 items-center">
-            {/* SINISTRA: TITOLO GIGANTE */}
-            <RevealOnScroll className="md:col-span-7 text-center md:text-left">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-[#FF4000] text-white text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-lg">
-                Offerta a tempo limitato
-              </span>
-              <h2
-                className="font-black text-white uppercase leading-[0.85] tracking-tight"
-                style={{ fontSize: "clamp(3rem, 7vw, 7rem)" }}
-              >
-                Inizia a
-                <br />
-                <span className="text-[#FF4000]">Settembre</span>
-              </h2>
-              <p className="mt-6 text-neutral-300 text-sm md:text-base font-medium uppercase tracking-wider max-w-md mx-auto md:mx-0">
-                Offerta riservata ai nuovi iscritti, valida solo nel mese di
-                settembre.
-              </p>
-            </RevealOnScroll>
-
-            {/* DESTRA: CARD PREZZI */}
-            <RevealOnScroll delay={200} className="md:col-span-5">
-              <div className="relative p-8 md:p-10 rounded-[2rem] border border-[#FF4000]/40 bg-neutral-900/60 backdrop-blur-md overflow-hidden shadow-2xl">
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 100% 0%, rgba(255,64,0,0.25), transparent 55%)",
-                  }}
-                ></div>
-
-                <div className="relative z-10">
-                  {/* Box Prezzi Promo Settembre */}
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 flex flex-col items-center justify-center text-center">
-                      <span className="text-neutral-400 text-xs md:text-sm uppercase tracking-widest mb-1 font-medium">
-                        Tesseramento
-                      </span>
-                      <span className="text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                        20€
-                      </span>
-                    </div>
-
-                    <div className="bg-black/60 border border-white/10 rounded-xl md:rounded-2xl p-4 md:p-5 flex flex-col items-center justify-center text-center">
-                      <span className="text-neutral-400 text-xs md:text-sm uppercase tracking-widest mb-1 font-medium">
-                        Abbonamento Mensile
-                      </span>
-                      <span className="text-4xl md:text-5xl text-white font-black drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                        35€
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Vantaggi */}
-                  <ul className="grid grid-cols-2 gap-3 text-neutral-300 text-xs md:text-sm font-medium uppercase tracking-wider bg-black/30 p-4 md:p-5 rounded-xl md:rounded-2xl border border-white/5 mb-8">
-                    <li className="flex items-center gap-2">
-                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
-                      <span>Energia ogni giorno</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
-                      <span>Corpo in forma</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
-                      <span>Mente focalizzata</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheck className="text-[#FF4000] shrink-0 text-base" />
-                      <span>Risultati reali</span>
-                    </li>
-                  </ul>
-
-                  {/* BOTTONE PER APRIRE IL POPUP */}
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="w-full bg-white hover:bg-[#FF4000] text-neutral-950 hover:text-white border-2 border-transparent hover:border-[#FF4000] font-black py-4 rounded-full text-base md:text-lg uppercase tracking-widest transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,64,0,0.4)]"
-                  >
-                    Richiedi Info
-                  </button>
-                </div>
-              </div>
-            </RevealOnScroll>
-          </div>
-        </section>
-
-        {/* === SEZIONE 7: CONTATTI E FOOTER === */}
+        {/* === SEZIONE 6: CONTATTI E FOOTER === */}
         <section
           id="footer-contatti"
           className="snap-section w-full min-h-screen flex flex-col bg-neutral-950 relative pt-10 md:pt-20 border-t border-white/5"
@@ -1306,106 +1072,8 @@ export default function Home() {
             </RevealOnScroll>
           </div>
 
-          {/* === FOOTER AZIENDALE === */}
-          <footer className="w-full bg-neutral-900/50 border-t border-white/5 relative z-20 backdrop-blur-md mt-auto">
-            <div className="max-w-7xl mx-auto px-6 py-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                <div className="space-y-4">
-                  <span className="font-sports text-3xl tracking-[0.10em] text-white">
-                    FORGE
-                  </span>
-                  <div className="space-y-1 text-xs md:text-sm text-neutral-500">
-                    <p>
-                      <strong className="text-neutral-300 font-medium">
-                        Ragione sociale:
-                      </strong>{" "}
-                      FRG srl
-                    </p>
-                    <p>
-                      <strong className="text-neutral-300 font-medium">
-                        Sede legale:
-                      </strong>{" "}
-                      Via Isla 16, 24021 Albino (BG)
-                    </p>
-                    <p>
-                      <strong className="text-neutral-300 font-medium">
-                        P.IVA / C.F.:
-                      </strong>{" "}
-                      04879900167
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col md:items-end justify-between h-full space-y-6">
-                  <div className="flex items-center gap-6">
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      className="text-neutral-400 hover:text-[#FF4000] transition-colors p-2 -m-2"
-                    >
-                      <FaInstagram className="text-2xl hover:scale-110 transition-transform" />
-                    </a>
-                    <a
-                      href="mailto:info@forgebuildyourstrength.com"
-                      className="text-neutral-400 hover:text-[#FF4000] transition-colors p-2 -m-2"
-                    >
-                      <FaEnvelope className="text-xl hover:scale-110 transition-transform" />
-                    </a>
-                  </div>
-
-                  {/* Link Legali Iubenda */}
-                  <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm font-medium text-neutral-500">
-                    <a
-                      href="https://www.iubenda.com/privacy-policy/73809111"
-                      className="iubenda-nostyle iubenda-noiframe iubenda-embed hover:text-white transition-colors"
-                      title="Privacy Policy"
-                    >
-                      Privacy Policy
-                    </a>
-
-                    <a
-                      href="https://www.iubenda.com/privacy-policy/73809111/cookie-policy"
-                      className="iubenda-nostyle iubenda-noiframe iubenda-embed hover:text-white transition-colors"
-                      title="Cookie Policy"
-                    >
-                      Cookie Policy
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* DISCLAIMER INFORMATIVO (Sostituisce Termini e Condizioni) */}
-              <div className="mt-4 pt-3 border-t border-white/5">
-                <p className="text-[10px] md:text-xs leading-relaxed text-neutral-500 font-light max-w-4xl">
-                  Le informazioni e le promozioni indicate sul sito hanno scopo
-                  puramente illustrativo e non costituiscono proposta
-                  contrattuale. L'offerta è soggetta a disponibilità limitata e
-                  la sottoscrizione del servizio avviene esclusivamente presso
-                  la sede fisica previa verifica dei requisiti.
-                </p>
-              </div>
-
-              <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] md:text-xs font-medium tracking-wider text-neutral-600 uppercase">
-                <p>
-                  © {new Date().getFullYear()} FRG Srl. Tutti i diritti
-                  riservati.
-                </p>
-                <p>
-                  Build <span className="text-[#FF4000]">Your</span> Strength
-                </p>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter />
         </section>
-        <Script
-          src="https://embeds.iubenda.com/widgets/058c2eba-1f08-4980-8ef7-e8f6e2b32379.js"
-          strategy="afterInteractive"
-        />
-        {/* MOTORE POPUP POLICY IUBENDA */}
-        <Script
-          src="https://cdn.iubenda.com/iubenda.js"
-          strategy="lazyOnload"
-        />
 
         {/* === POPUP FORM CONTATTI (MODAL) === */}
         <div

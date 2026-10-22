@@ -84,7 +84,46 @@ html.lenis {
 .animate-fade-in-arrow {
   opacity: 0;
   /* Appare dolcemente in 1 secondo, ma aspetta 2.5 secondi (il tempo che il testo si animi) */
-  animation: fade-in-arrow 1s ease-in-out 2.5s forwards; 
+  animation: fade-in-arrow 1s ease-in-out 2.5s forwards;
+}
+
+/* La freccia scende, svanisce e riparte dall'alto: il classico invito a scorrere */
+@keyframes scroll-hint {
+  0% { transform: translateY(-8px); opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+@keyframes scroll-hint-fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.animate-scroll-hint {
+  animation: scroll-hint 1.8s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* chi ha ridotto le animazioni nel sistema vede solo una pulsazione, senza movimento */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-hint {
+    animation: scroll-hint-fade 2s ease-in-out infinite;
+  }
 }
 /* --- AGGANCIO SEZIONI MOBILE --- */
 /* Niente scroll-snap CSS: su mobile interrompe l'inerzia del dito e lo scroll
