@@ -577,6 +577,20 @@ export default function Home() {
           className="snap-section relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
           <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
+            {/* PULSANTE FORGE GAMES: solo dove il menu e' ad hamburger (sotto 1280px) */}
+            <div className="xl:hidden mb-5 md:mb-8 animate-fade-in-delayed">
+              {/* identico al pulsante del menu desktop (uppercase e nowrap li' arrivano dalla lista del menu) */}
+              <TransitionLink
+                href="/forge-games"
+                className="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#FF4000] uppercase whitespace-nowrap shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                <FaMedal className="text-[13px] text-white transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
+                <span className="text-xs font-bold tracking-[0.18em] text-white">
+                  Forge Games
+                </span>
+              </TransitionLink>
+            </div>
+
             {/* TITOLO PRINCIPALE */}
             <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right pointer-events-none select-none">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH
