@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FaArrowRight, FaChevronDown } from "react-icons/fa";
+import { FaArrowDown, FaChevronDown } from "react-icons/fa";
 
 type NavHandler = (e: React.MouseEvent<HTMLAnchorElement>) => void;
 
@@ -30,7 +30,7 @@ function SignupLink({ onNavigate }: { onNavigate: NavHandler }) {
       className="group inline-flex items-center gap-3 will-change-transform bg-[#FF4000] text-white font-black uppercase tracking-widest rounded-xl py-3 px-7 sm:py-[min(1rem,2.2dvh)] sm:px-9 text-sm sm:text-base shadow-[0_0_30px_rgba(255,64,0,0.45),0_8px_20px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:scale-105 hover:shadow-[0_0_45px_rgba(255,64,0,0.65),0_8px_20px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
     >
       Iscriviti subito
-      <FaArrowRight className="text-xs sm:text-sm shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+      <FaArrowDown className="text-xs sm:text-sm shrink-0 transition-transform duration-300 group-hover:translate-y-0.5" />
     </a>
   );
 }

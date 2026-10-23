@@ -20,12 +20,9 @@ import {
   FaImages,
   FaInfoCircle,
   FaTags,
-  FaTrophy,
-  FaMedal,
 } from "react-icons/fa";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
-import { TransitionLink } from "./components/PageTransitions";
 
 import { Analytics } from "@vercel/analytics/react";
 import { track } from "@vercel/analytics";
@@ -35,6 +32,7 @@ import RevealOnScroll from "./components/RevealOnScroll";
 import SiteFooter from "./components/SiteFooter";
 import useSectionSnap from "./components/useSectionSnap";
 import ContactSection from "./components/ContactSection";
+import PromoProtagonista from "./components/HomeEventPromo";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -317,18 +315,6 @@ export default function Home() {
                   Contatti
                 </a>
               </li>
-
-              <li>
-                <TransitionLink
-                  href="/forge-games"
-                  className="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#FF4000] shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                >
-                  <FaMedal className="text-[13px] text-white transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
-                  <span className="text-xs font-bold tracking-[0.18em] text-white">
-                    Forge Games
-                  </span>
-                </TransitionLink>
-              </li>
             </ul>
           </nav>
 
@@ -520,29 +506,6 @@ export default function Home() {
                   </span>
                 </a>
               </li>
-
-              <li
-                className="transition-all duration-500 ease-out"
-                style={{
-                  transitionDelay: isMenuOpen ? "400ms" : "0ms",
-                  opacity: isMenuOpen ? 1 : 0,
-                  transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
-                }}
-              >
-                <TransitionLink
-                  href="/forge-games"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-4 w-full p-4 rounded-[1.5rem] border border-[#FF4000] bg-[#FF4000]/10"
-                >
-                  <span className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg bg-[#FF4000] text-white">
-                    <FaTrophy />
-                  </span>
-                  <span className="flex-1 text-xl font-black uppercase tracking-tight text-[#FF4000]">
-                    Forge Games
-                  </span>
-                  <FaArrowRight className="text-sm text-[#FF4000] shrink-0" />
-                </TransitionLink>
-              </li>
             </ul>
 
             <div
@@ -576,21 +539,10 @@ export default function Home() {
           id="home"
           className="snap-section relative h-[100dvh] w-full flex flex-col items-center justify-center px-4 overflow-hidden"
         >
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
-            {/* PULSANTE FORGE GAMES: solo dove il menu e' ad hamburger (sotto 1280px) */}
-            <div className="xl:hidden mb-5 md:mb-8 animate-fade-in-delayed">
-              {/* identico al pulsante del menu desktop (uppercase e nowrap li' arrivano dalla lista del menu) */}
-              <TransitionLink
-                href="/forge-games"
-                className="group flex items-center gap-2 pl-3 pr-4 py-2 rounded-full bg-[#FF4000] uppercase whitespace-nowrap shadow-[0_0_18px_rgba(255,64,0,0.3),0_6px_16px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_0_26px_rgba(255,64,0,0.5),0_6px_16px_rgba(0,0,0,0.5)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-              >
-                <FaMedal className="text-[13px] text-white transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
-                <span className="text-xs font-bold tracking-[0.18em] text-white">
-                  Forge Games
-                </span>
-              </TransitionLink>
-            </div>
+          {/* ANNUNCIO FORGE GAMES al centro dello schermo */}
+          <PromoProtagonista />
 
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden flex flex-col items-center pb-8 md:pb-12 z-20">
             {/* TITOLO PRINCIPALE */}
             <h1 className="font-black w-full text-center text-[6vw] md:text-[7.6vw] leading-[0.8] tracking-tight text-white uppercase whitespace-nowrap drop-shadow-2xl opacity-0 animate-slide-in-right pointer-events-none select-none">
               BUILD <span className="text-[#FF4000]">YOUR</span> STRENGTH

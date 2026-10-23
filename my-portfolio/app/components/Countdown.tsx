@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 
 interface CountdownProps {
   targetDate: string; // Formato ISO, es: "2026-04-04T08:00:00"
+  digitHeight?: string; // classi Tailwind per l'altezza delle cifre
 }
 
 type TimeLeft = { days: number; hours: number; minutes: number; seconds: number };
@@ -40,7 +41,9 @@ function Digit({ value }: { value: number | null }) {
   );
 }
 
-export default function Countdown({ targetDate }: CountdownProps) {
+const DEFAULT_DIGIT_HEIGHT = "h-[min(2.75rem,7dvh)] sm:h-14 md:h-[min(4rem,8dvh)] xl:h-[min(5rem,10dvh)]";
+
+export default function Countdown({ targetDate, digitHeight = DEFAULT_DIGIT_HEIGHT }: CountdownProps) {
   // null finche' non siamo nel browser: il display parte "spento" e si accende al primo calcolo
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
 
@@ -73,7 +76,6 @@ export default function Countdown({ targetDate }: CountdownProps) {
     { label: "Sec", value: timeLeft?.seconds },
   ];
   const colonOn = (timeLeft?.seconds ?? 0) % 2 === 0;
-  const digitHeight = "h-[min(2.75rem,7dvh)] sm:h-14 md:h-[min(4rem,8dvh)] xl:h-[min(5rem,10dvh)]";
 
   return (
     <div
